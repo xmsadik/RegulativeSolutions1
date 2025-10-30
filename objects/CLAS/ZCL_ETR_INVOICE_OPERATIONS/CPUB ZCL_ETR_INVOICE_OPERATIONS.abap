@@ -76,7 +76,20 @@ CLASS zcl_etr_invoice_operations DEFINITION
         datbi TYPE datum,
         genid TYPE zetr_e_genid,
         prfid TYPE zetr_e_inprf,
-      END OF mty_company_data.
+      END OF mty_company_data,
+      BEGIN OF mty_invoice_selection,
+        bukrs TYPE RANGE OF bukrs,
+        belnr TYPE RANGE OF belnr_d,
+        gjahr TYPE RANGE OF gjahr,
+        awtyp TYPE RANGE OF zetr_e_awtyp,
+        sddty TYPE RANGE OF fkart,
+        mmdty TYPE RANGE OF blart,
+        fidty TYPE RANGE OF blart,
+        ernam TYPE RANGE OF ernam,
+        erdat TYPE RANGE OF erdat,
+        bldat TYPE RANGE OF bldat,
+      END OF mty_invoice_selection,
+      mty_saved_invoces TYPE STANDARD TABLE OF zetr_ddl_i_unsaved_invoices WITH EMPTY KEY.
 
     TYPES BEGIN OF mty_outgoing_invoice.
     INCLUDE TYPE zetr_t_oginv.
@@ -114,6 +127,15 @@ CLASS zcl_etr_invoice_operations DEFINITION
         !iv_input        TYPE string
       RETURNING
         VALUE(rv_output) TYPE string.
+
+    CLASS-METHODS outgoing_invoice_mass_save
+      IMPORTING
+        is_selection   TYPE mty_invoice_selection
+        iv_save_source TYPE zetr_e_svsrc OPTIONAL
+        iv_max_count   TYPE i OPTIONAL
+      EXPORTING
+        et_invoices    TYPE mty_saved_invoces
+        et_logs        TYPE bapirettab.
 
     METHODS update_einvoice_users
       IMPORTING

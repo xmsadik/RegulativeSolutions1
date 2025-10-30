@@ -7,7 +7,7 @@ lock master
 authorization master ( instance )
 //etag master <field_name>
 {
-  field ( readonly : update ) docui;
+  field ( readonly : update ) bukrs, belnr, gjahr, awtyp;
   //  create;
   //  update;
   //  delete;

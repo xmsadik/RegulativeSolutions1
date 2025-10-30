@@ -52,5 +52,11 @@
                                   datatype = 'D'
                                   length = 8
                                   param_text = 'Created At'
+                                  changeable_ind = abap_true )
+                                ( selname = 'S_BLDAT'
+                                  kind = if_apj_dt_exec_object=>select_option
+                                  datatype = 'D'
+                                  length = 8
+                                  param_text = 'Document Date'
                                   changeable_ind = abap_true ) ).
   ENDMETHOD.
