@@ -10,7 +10,10 @@
     DATA: lt_documents     TYPE SORTED TABLE OF ty_document WITH UNIQUE KEY docui
                                                           WITH NON-UNIQUE SORTED KEY by_bukrs COMPONENTS bukrs,
 *          lt_companies     TYPE STANDARD TABLE OF ty_company,
+          lt_docui_range   TYPE RANGE OF zetr_t_oginv-docui,
           lt_bukrs_range   TYPE RANGE OF zetr_t_oginv-bukrs,
+          lt_belnr_range   TYPE RANGE OF zetr_t_oginv-belnr,
+          lt_gjahr_range   TYPE RANGE OF zetr_t_oginv-gjahr,
           lt_awtyp_range   TYPE RANGE OF zetr_t_oginv-awtyp,
           lt_bldat_range   TYPE RANGE OF zetr_t_oginv-bldat,
           lt_werks_range   TYPE RANGE OF zetr_t_oginv-werks,
@@ -26,9 +29,18 @@
 
     LOOP AT it_parameters INTO DATA(ls_parameter).
       CASE ls_parameter-selname.
+        WHEN 'S_DOCUI'.
+          APPEND INITIAL LINE TO lt_docui_range ASSIGNING FIELD-SYMBOL(<ls_docui>).
+          <ls_docui> = CORRESPONDING #( ls_parameter ).
         WHEN 'S_BUKRS'.
           APPEND INITIAL LINE TO lt_bukrs_range ASSIGNING FIELD-SYMBOL(<ls_bukrs>).
           <ls_bukrs> = CORRESPONDING #( ls_parameter ).
+        WHEN 'S_BELNR'.
+          APPEND INITIAL LINE TO lt_belnr_range ASSIGNING FIELD-SYMBOL(<ls_belnr>).
+          <ls_belnr> = CORRESPONDING #( ls_parameter ).
+        WHEN 'S_GJAHR'.
+          APPEND INITIAL LINE TO lt_gjahr_range ASSIGNING FIELD-SYMBOL(<ls_gjahr>).
+          <ls_gjahr> = CORRESPONDING #( ls_parameter ).
         WHEN 'S_AWTYP'.
           APPEND INITIAL LINE TO lt_awtyp_range ASSIGNING FIELD-SYMBOL(<ls_awtyp>).
           <ls_awtyp> = CORRESPONDING #( ls_parameter ).
@@ -77,13 +89,40 @@
     TRY.
         DATA(lo_log) = cl_bali_log=>create_with_header( cl_bali_header_setter=>create( object = 'ZETR_ALO_REGULATIVE'
                                                                                        subobject = 'INVOICE_SEND_JOB' ) ).
-        LOOP AT lt_bukrs_range ASSIGNING <ls_bukrs>.
+        LOOP AT lt_docui_range ASSIGNING <ls_docui>.
           DATA(lo_free_text) = cl_bali_free_text_setter=>create( severity = if_bali_constants=>c_severity_information
-                                                                 text     = 'Parameter : Company Code->' &&
-                                                                            <ls_bukrs>-sign &&
-                                                                            <ls_bukrs>-option &&
-                                                                            <ls_bukrs>-low &&
-                                                                            <ls_bukrs>-high ).
+                                                                 text     = 'Parameter : Document UUID->' &&
+                                                                            <ls_docui>-sign &&
+                                                                            <ls_docui>-option &&
+                                                                            <ls_docui>-low &&
+                                                                            <ls_docui>-high ).
+          lo_log->add_item( lo_free_text ).
+        ENDLOOP.
+        LOOP AT lt_bukrs_range ASSIGNING <ls_bukrs>.
+          lo_free_text = cl_bali_free_text_setter=>create( severity = if_bali_constants=>c_severity_information
+                                                           text     = 'Parameter : Company Code->' &&
+                                                                      <ls_bukrs>-sign &&
+                                                                      <ls_bukrs>-option &&
+                                                                      <ls_bukrs>-low &&
+                                                                      <ls_bukrs>-high ).
+          lo_log->add_item( lo_free_text ).
+        ENDLOOP.
+        LOOP AT lt_belnr_range ASSIGNING <ls_belnr>.
+          lo_free_text = cl_bali_free_text_setter=>create( severity = if_bali_constants=>c_severity_information
+                                                           text     = 'Parameter : Document Number->' &&
+                                                                      <ls_belnr>-sign &&
+                                                                      <ls_belnr>-option &&
+                                                                      <ls_belnr>-low &&
+                                                                      <ls_belnr>-high ).
+          lo_log->add_item( lo_free_text ).
+        ENDLOOP.
+        LOOP AT lt_gjahr_range ASSIGNING <ls_gjahr>.
+          lo_free_text = cl_bali_free_text_setter=>create( severity = if_bali_constants=>c_severity_information
+                                                           text     = 'Parameter : Fiscal Year->' &&
+                                                                      <ls_gjahr>-sign &&
+                                                                      <ls_gjahr>-option &&
+                                                                      <ls_gjahr>-low &&
+                                                                      <ls_gjahr>-high ).
           lo_log->add_item( lo_free_text ).
         ENDLOOP.
         LOOP AT lt_awtyp_range ASSIGNING <ls_awtyp>.
@@ -211,7 +250,10 @@
                  eatyp AS eArchiveType,
                  intsl AS InternetSale,
                  invii AS IntegratorDocumentID
-          WHERE bukrs IN @lt_bukrs_range
+          WHERE docui IN @lt_docui_range
+            AND bukrs IN @lt_bukrs_range
+            AND belnr IN @lt_belnr_range
+            AND gjahr IN @lt_gjahr_range
             AND stacd IN @lt_stacd_range
             AND awtyp IN @lt_awtyp_range
             AND bldat IN @lt_bldat_range

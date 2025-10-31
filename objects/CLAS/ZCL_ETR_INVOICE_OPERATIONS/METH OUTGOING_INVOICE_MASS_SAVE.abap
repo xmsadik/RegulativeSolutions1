@@ -407,8 +407,6 @@
                documentnumber AS belnr ,
                fiscalyear AS gjahr ,
                documenttype AS awtyp ,
-               'Saved' AS status,
-               3 AS status_criticality,
                documenttypetext AS awtyp_text,
                partnernumber AS partner,
                partnername AS partner_name,
@@ -427,9 +425,15 @@
                createtime AS erzet
           FROM zetr_ddl_i_outgoing_invoices
           WHERE documentuuid IN @lt_docui_range
-          APPENDING CORRESPONDING FIELDS OF TABLE @et_invoices.
+          INTO TABLE @DATA(Lt_saved_invoices).
+        LOOP AT lt_saved_invoices INTO DATA(ls_saved_invoice).
+          APPEND INITIAL LINE TO et_invoices ASSIGNING <ls_invoice>.
+          <ls_invoice> = CORRESPONDING #( ls_saved_invoice ).
+          <ls_invoice>-status = 'Saved'.
+          <ls_invoice>-status_criticality = 3.
+        ENDLOOP.
 
-        DATA(lv_saved_records) = lines( lt_docui_range ).
+        DATA(lv_saved_records) = lines( lt_saved_invoices ).
         APPEND INITIAL LINE TO et_logs ASSIGNING <ls_log>.
         <ls_log>-id = 'ZETR_COMMON'.
         <ls_log>-type = if_abap_behv_message=>severity-warning.

@@ -1,9 +1,28 @@
   METHOD if_apj_dt_exec_object~get_parameters.
-    et_parameter_def = VALUE #( ( selname = 'S_BUKRS'
+    et_parameter_def = VALUE #( ( selname = 'S_DOCUI'
+                                  kind = if_apj_dt_exec_object=>select_option
+                                  datatype = 'C'
+                                  length = 36
+                                  param_text = 'Document UUID (DOCUI)'
+                                  lowercase_ind = abap_true
+                                  changeable_ind = abap_true )
+                                ( selname = 'S_BUKRS'
                                   kind = if_apj_dt_exec_object=>select_option
                                   datatype = 'C'
                                   length = 4
                                   param_text = 'Company (BUKRS)'
+                                  changeable_ind = abap_true )
+                                ( selname = 'S_BELNR'
+                                  kind = if_apj_dt_exec_object=>select_option
+                                  datatype = 'N'
+                                  length = 10
+                                  param_text = 'Document (BELNR)'
+                                  changeable_ind = abap_true )
+                                ( selname = 'S_GJAHR'
+                                  kind = if_apj_dt_exec_object=>select_option
+                                  datatype = 'N'
+                                  length = 4
+                                  param_text = 'Year (GJAHR)'
                                   changeable_ind = abap_true )
                                 ( selname = 'S_AWTYP'
                                   kind = if_apj_dt_exec_object=>select_option

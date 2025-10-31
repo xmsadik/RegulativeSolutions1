@@ -58,13 +58,16 @@
         AND invoice~fiscalyear = @iv_gjahr
       INTO @ls_rbkp.
 
-    IF ls_rbkp IS INITIAL
-      OR ls_rbkp-xrech <> ''
-      OR ls_rbkp-stblg <> ''
-      OR ls_rbkp-rbstat = 'A'.
+    IF ls_rbkp IS INITIAL.
       es_return-type = 'E'.
       es_return-id = 'ZETR_COMMON'.
       es_return-number = '005'.
+    ELSEIF ls_rbkp-xrech <> ''
+        OR ls_rbkp-stblg <> ''
+        OR ls_rbkp-rbstat = 'A'.
+      es_return-type = 'E'.
+      es_return-id = 'ZETR_COMMON'.
+      es_return-number = '093'.
       RETURN.
     ENDIF.
 
