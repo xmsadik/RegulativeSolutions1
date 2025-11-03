@@ -25,10 +25,13 @@
           lt_taxid_range   TYPE RANGE OF zetr_t_oginv-taxid,
           lt_prfid_range   TYPE RANGE OF zetr_t_oginv-prfid,
           lt_invty_range   TYPE RANGE OF zetr_t_oginv-invty,
-          lt_stacd_range   TYPE RANGE OF zetr_e_stacd.
+          lt_stacd_range   TYPE RANGE OF zetr_t_oginv-stacd,
+          lv_send_logs_to  TYPE sy-uname.
 
     LOOP AT it_parameters INTO DATA(ls_parameter).
       CASE ls_parameter-selname.
+        WHEN 'P_UNAME'.
+          lv_send_logs_to = ls_parameter-low.
         WHEN 'S_DOCUI'.
           APPEND INITIAL LINE TO lt_docui_range ASSIGNING FIELD-SYMBOL(<ls_docui>).
           <ls_docui> = CORRESPONDING #( ls_parameter ).
@@ -308,13 +311,11 @@
                                                            id = 'ZETR_COMMON'
                                                            number = '036' ).
               lo_log->add_item( lo_message ).
-              DELETE InvoiceList.
             ELSEIF ( <InvoiceLine>-TaxAmount IS INITIAL OR <InvoiceLine>-ExemptionExists = abap_true ) AND <InvoiceLine>-TaxExemption IS INITIAL.
               lo_message = cl_bali_message_setter=>create( severity = if_bali_constants=>c_severity_error
                                                            id = 'ZETR_COMMON'
                                                            number = '039' ).
               lo_log->add_item( lo_message ).
-              DELETE InvoiceList.
             ELSE.
               TRY.
                   DATA(OutgoingInvoiceInstance) = zcl_etr_outgoing_invoice=>factory( <invoiceline>-documentuuid ).
@@ -412,7 +413,7 @@
                   zcl_etr_regulative_log=>create_single_log( iv_log_code    = zcl_etr_regulative_log=>mc_log_codes-sent
                                                              iv_document_id = <InvoiceLine>-documentuuid ).
 
-
+                  MESSAGE s033(zetr_common) INTO <invoiceline>-statusdetail.
                 CATCH cx_root INTO DATA(RegulativeException).
                   DATA(ErrorMessage) = CONV bapi_msg( RegulativeException->get_text( ) ).
                   lo_message = cl_bali_message_setter=>create( severity = if_bali_constants=>c_severity_error
@@ -422,10 +423,10 @@
                   lo_message = cl_bali_message_setter=>create( severity = if_bali_constants=>c_severity_error
                                                                id = 'ZETR_COMMON'
                                                                number = '000'
-                                                               variable_1 = CONV #( ErrorMessage(50) )
-                                                               variable_2 = CONV #( ErrorMessage+50(50) )
-                                                               variable_3 = CONV #( ErrorMessage+100(50) )
-                                                               variable_4 = CONV #( ErrorMessage+150(*) )  ).
+                                                               variable_1 = ErrorMessage(50)
+                                                               variable_2 = ErrorMessage+50(50)
+                                                               variable_3 = ErrorMessage+100(50)
+                                                               variable_4 = ErrorMessage+150(50) ).
                   lo_log->add_item( lo_message ).
                   <InvoiceLine>-StatusCode = '2'.
                   <InvoiceLine>-StatusDetail = ErrorMessage.
@@ -433,6 +434,11 @@
             ENDIF.
           ENDLOOP.
           CHECK InvoiceList IS NOT INITIAL.
+
+          IF lv_send_logs_to IS NOT INITIAL.
+            send_logs_to_user( iv_user     = lv_send_logs_to
+                               it_invoices = CORRESPONDING #( invoicelist ) ).
+          ENDIF.
 
           IF lt_auto_mail IS NOT INITIAL.
             DATA lt_parameters TYPE cl_apj_rt_api=>tt_job_parameter_value.

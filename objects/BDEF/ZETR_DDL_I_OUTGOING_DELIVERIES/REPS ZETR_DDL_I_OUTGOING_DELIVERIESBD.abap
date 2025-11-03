@@ -96,6 +96,7 @@ authorization master ( instance )
   association _deliveryItems { create ( features : instance ); }
 
   action ( features : instance ) sendDeliveries result [1] $self;
+  action ( features : instance ) sendDeliveriesBackground result [1] $self;
   action ( features : instance ) archiveDeliveries result [1] $self;
   action ( features : instance ) statusUpdate result [1] $self;
   action ( features : instance ) setAsRejected parameter ZETR_DDL_I_NOTE_SELECTION result [1] $self;

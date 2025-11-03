@@ -8,6 +8,7 @@ define behavior for zetr_ddl_p_outgoing_deliveries alias OutgoingDeliveries
   use delete;
 
   use action sendDeliveries;
+  use action sendDeliveriesBackground;
   use action archiveDeliveries;
   use action statusUpdate;
   use action setAsRejected;

@@ -8,5 +8,12 @@
 *    INSERT zetr_t_ogdlv FROM @ls_ogdlv.
 *    CHECK sy-subrc = 0.
 *    COMMIT WORK AND WAIT.
-update zetr_t_oginv set invno = 'AR82024000000001' WHERE invno = 'ARS8202400000001'.
+*update zetr_t_oginv set invno = 'AR82024000000001' WHERE invno = 'ARS8202400000001'.
+
+
+
+
+
+
+
   ENDMETHOD.

@@ -1,5 +1,6 @@
   METHOD if_apj_rt_exec_object~execute.
-    DATA: lt_bukrs_range   TYPE RANGE OF zetr_t_ogdlv-bukrs,
+    DATA: lt_docui_range   TYPE RANGE OF zetr_t_oginv-docui,
+          lt_bukrs_range   TYPE RANGE OF zetr_t_ogdlv-bukrs,
           lt_awtyp_range   TYPE RANGE OF zetr_t_ogdlv-awtyp,
           lt_bldat_range   TYPE RANGE OF zetr_t_ogdlv-bldat,
           lt_werks_range   TYPE RANGE OF zetr_t_ogdlv-werks,
@@ -11,10 +12,16 @@
           lt_taxid_range   TYPE RANGE OF zetr_t_ogdlv-taxid,
           lt_prfid_range   TYPE RANGE OF zetr_t_ogdlv-prfid,
           lt_dlvty_range   TYPE RANGE OF zetr_t_ogdlv-dlvty,
-          lt_stacd_range   TYPE RANGE OF zetr_e_stacd.
+          lt_stacd_range   TYPE RANGE OF zetr_t_oginv-stacd,
+          lv_send_logs_to  TYPE sy-uname.
 
     LOOP AT it_parameters INTO DATA(ls_parameter).
       CASE ls_parameter-selname.
+        WHEN 'P_UNAME'.
+          lv_send_logs_to = ls_parameter-low.
+        WHEN 'S_DOCUI'.
+          APPEND INITIAL LINE TO lt_docui_range ASSIGNING FIELD-SYMBOL(<ls_docui>).
+          <ls_docui> = CORRESPONDING #( ls_parameter ).
         WHEN 'S_BUKRS'.
           APPEND INITIAL LINE TO lt_bukrs_range ASSIGNING FIELD-SYMBOL(<ls_bukrs>).
           <ls_bukrs> = CORRESPONDING #( ls_parameter ).
@@ -65,14 +72,23 @@
 
     TRY.
         DATA(lo_log) = cl_bali_log=>create_with_header( cl_bali_header_setter=>create( object = 'ZETR_ALO_REGULATIVE'
-                                                                                       subobject = 'INVOICE_SEND_JOB' ) ).
-        LOOP AT lt_bukrs_range ASSIGNING <ls_bukrs>.
+                                                                                       subobject = 'DELIVERY_SEND_JOB' ) ).
+        LOOP AT lt_docui_range ASSIGNING <ls_docui>.
           DATA(lo_free_text) = cl_bali_free_text_setter=>create( severity = if_bali_constants=>c_severity_information
-                                                                 text     = 'Parameter : Company Code->' &&
-                                                                            <ls_bukrs>-sign &&
-                                                                            <ls_bukrs>-option &&
-                                                                            <ls_bukrs>-low &&
-                                                                            <ls_bukrs>-high ).
+                                                                 text     = 'Parameter : Document UUID->' &&
+                                                                            <ls_docui>-sign &&
+                                                                            <ls_docui>-option &&
+                                                                            <ls_docui>-low &&
+                                                                            <ls_docui>-high ).
+          lo_log->add_item( lo_free_text ).
+        ENDLOOP.
+        LOOP AT lt_bukrs_range ASSIGNING <ls_bukrs>.
+          lo_free_text = cl_bali_free_text_setter=>create( severity = if_bali_constants=>c_severity_information
+                                                           text     = 'Parameter : Company Code->' &&
+                                                                      <ls_bukrs>-sign &&
+                                                                      <ls_bukrs>-option &&
+                                                                      <ls_bukrs>-low &&
+                                                                      <ls_bukrs>-high ).
           lo_log->add_item( lo_free_text ).
         ENDLOOP.
         LOOP AT lt_awtyp_range ASSIGNING <ls_awtyp>.
@@ -222,7 +238,6 @@
                                                            id = 'ZETR_COMMON'
                                                            number = '036' ).
               lo_log->add_item( lo_message ).
-              DELETE DeliveryList.
             ELSE.
               TRY.
                   DATA(OutgoingdeliveryInstance) = zcl_etr_outgoing_delivery=>factory( <deliveryline>-documentuuid ).
@@ -291,7 +306,7 @@
                   zcl_etr_regulative_log=>create_single_log( iv_log_code    = zcl_etr_regulative_log=>mc_log_codes-sent
                                                              iv_document_id = <DeliveryLine>-documentuuid ).
 
-
+                  MESSAGE s033(zetr_common) INTO <DeliveryLine>-StatusDetail.
                 CATCH cx_root INTO DATA(RegulativeException).
                   DATA(ErrorMessage) = CONV bapi_msg( RegulativeException->get_text( ) ).
                   lo_message = cl_bali_message_setter=>create( severity = if_bali_constants=>c_severity_error
@@ -301,16 +316,21 @@
                   lo_message = cl_bali_message_setter=>create( severity = if_bali_constants=>c_severity_error
                                                                id = 'ZETR_COMMON'
                                                                number = '000'
-                                                               variable_1 = CONV #( ErrorMessage(50) )
-                                                               variable_2 = CONV #( ErrorMessage+50(50) )
-                                                               variable_3 = CONV #( ErrorMessage+100(50) )
-                                                               variable_4 = CONV #( ErrorMessage+150(*) )  ).
+                                                               variable_1 = ErrorMessage(50)
+                                                               variable_2 = ErrorMessage+50(50)
+                                                               variable_3 = ErrorMessage+100(50)
+                                                               variable_4 = ErrorMessage+150(50) ).
                   lo_log->add_item( lo_message ).
                   <DeliveryLine>-StatusCode = '2'.
                   <DeliveryLine>-StatusDetail = ErrorMessage.
               ENDTRY.
             ENDIF.
           ENDLOOP.
+
+          IF lv_send_logs_to IS NOT INITIAL.
+            send_logs_to_user( iv_user = lv_send_logs_to
+                               it_deliveries = CORRESPONDING #( deliverylist ) ).
+          ENDIF.
         ENDIF.
 
         cl_bali_log_db=>get_instance( )->save_log( log = lo_log assign_to_current_appl_job = abap_true ).

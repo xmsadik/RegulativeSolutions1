@@ -71,6 +71,8 @@ CLASS lhc_zetr_ddl_i_outgoing_invoic IMPLEMENTATION.
                       ( %tky = ls_invoice-%tky
                         %action-sendinvoices = COND #( WHEN ls_invoice-statuscode <> '' AND ls_invoice-statuscode <> '2' AND ls_invoice-Reversed = 'X'
                                                    THEN if_abap_behv=>fc-o-disabled ELSE if_abap_behv=>fc-o-enabled  )
+                        %action-sendInvoicesBackground = COND #( WHEN ls_invoice-statuscode <> '' AND ls_invoice-statuscode <> '2' AND ls_invoice-Reversed = 'X'
+                                                   THEN if_abap_behv=>fc-o-disabled ELSE if_abap_behv=>fc-o-enabled  )
                         %action-archiveinvoices = COND #( WHEN ls_invoice-statuscode = '' OR ls_invoice-statuscode = '2'
                                                    THEN if_abap_behv=>fc-o-disabled ELSE if_abap_behv=>fc-o-enabled  )
                         %action-setasrejected = COND #( WHEN ls_invoice-statuscode = '' OR ls_invoice-statuscode = '2'
@@ -556,16 +558,18 @@ CLASS lhc_zetr_ddl_i_outgoing_invoic IMPLEMENTATION.
           CATCH cx_abap_context_info_error.
         ENDTRY.
         lv_timestamp += 1000.
+        DATA(lt_parameters) = VALUE cl_apj_rt_api=>tt_job_parameter_value( FOR Invoice IN InvoiceList
+                                                ( name = 'S_DOCUI'
+                                                  t_value = VALUE #( ( sign = 'I'
+                                                                       option = 'EQ'
+                                                                       low = Invoice-DocumentUUID ) ) ) ).
+        APPEND VALUE #( name = 'P_UNAME' t_value = VALUE #( ( sign = 'I' option = 'EQ' low = sy-uname ) ) ) TO lt_parameters.
         cl_apj_rt_api=>schedule_job_commit_immstart(
           EXPORTING
               iv_job_template_name = 'ZETR_AJT_INVOICE_AUTO_SEND'
               iv_job_text = 'eSolutions - Send Outgoing Invoices'
               is_start_info = VALUE #( start_immediately = abap_true )
-              it_job_parameter_value = VALUE #( FOR Invoice IN InvoiceList
-                                                ( name = 'S_DOCUI'
-                                                  t_value = VALUE #( ( sign = 'I'
-                                                                       option = 'EQ'
-                                                                       low = Invoice-DocumentUUID ) ) ) )
+              it_job_parameter_value = lt_parameters
           IMPORTING
             ev_jobname = DATA(lv_jobname)
             ev_jobcount = DATA(lv_jobcount)
@@ -581,15 +585,10 @@ CLASS lhc_zetr_ddl_i_outgoing_invoic IMPLEMENTATION.
                                                 severity = CONV #( ls_message-type ) ) ) TO reported-outgoinginvoices.
           ENDLOOP.
         ELSE.
-          ls_job_info-status = cl_apj_rt_api=>status_running.
-          WHILE ls_job_info-status = cl_apj_rt_api=>status_running.
-            ls_job_info = cl_apj_rt_api=>get_job_details( iv_jobname = lv_jobname
-                                                          iv_jobcount = lv_jobcount ).
-          ENDWHILE.
           APPEND VALUE #( %msg = new_message( id       = 'ZETR_COMMON'
                                               number   = '000'
-                                              v1       = `Job : `
-                                              v2       = ls_job_info-status_text
+                                              v1       = COND #( WHEN sy-langu = 'T' THEN `Gönderim başlatıldı : ` ELSE `Job Started : ` )
+                                              v2       = lv_jobname
                                               severity = if_abap_behv_message=>severity-success ) ) TO reported-outgoinginvoices.
         ENDIF.
       CATCH cx_apj_rt INTO DATA(lx_regulative_exception).
@@ -746,7 +745,7 @@ CLASS lhc_zetr_ddl_i_outgoing_invoic IMPLEMENTATION.
 
     TRY.
         IF lt_journal_entry IS NOT INITIAL.
-          MODIFY ENTITIES OF i_journalentrytp
+          MODIFY ENTITIES OF i_journalentrytp FORWARDING PRIVILEGED
            ENTITY journalentry
            EXECUTE change FROM lt_journal_entry
            FAILED DATA(ls_failed)

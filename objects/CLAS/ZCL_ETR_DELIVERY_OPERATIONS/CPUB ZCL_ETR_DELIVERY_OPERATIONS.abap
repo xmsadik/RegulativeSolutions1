@@ -12,6 +12,19 @@ CLASS zcl_etr_delivery_operations DEFINITION
       mty_incoming_full_list TYPE STANDARD TABLE OF zetr_ddl_i_incoming_delhead WITH DEFAULT KEY,
       mty_incoming_list      TYPE STANDARD TABLE OF zetr_t_icdlv WITH DEFAULT KEY,
       mty_incoming_items     TYPE STANDARD TABLE OF zetr_t_icdli WITH DEFAULT KEY,
+      BEGIN OF mty_delivery_selection,
+        bukrs TYPE RANGE OF bukrs,
+        belnr TYPE RANGE OF belnr_d,
+        gjahr TYPE RANGE OF gjahr,
+        awtyp TYPE RANGE OF zetr_e_awtyp,
+        sddty TYPE RANGE OF fkart,
+        mmdty TYPE RANGE OF blart,
+        fidty TYPE RANGE OF blart,
+        ernam TYPE RANGE OF ernam,
+        erdat TYPE RANGE OF erdat,
+        bldat TYPE RANGE OF bldat,
+      END OF mty_delivery_selection,
+      mty_saved_deliveries TYPE STANDARD TABLE OF zetr_ddl_i_unsaved_deliveries WITH EMPTY KEY,
       BEGIN OF mty_partner_register_data,
         businesspartner TYPE zetr_e_partner,
         bptaxnumber     TYPE c LENGTH 20,
@@ -53,6 +66,15 @@ CLASS zcl_etr_delivery_operations DEFINITION
         VALUE(ro_instance) TYPE REF TO zcl_etr_delivery_operations
       RAISING
         zcx_etr_regulative_exception .
+
+    CLASS-METHODS outgoing_delivery_mass_save
+      IMPORTING
+        is_selection   TYPE mty_delivery_selection
+        iv_save_source TYPE zetr_e_svsrc OPTIONAL
+        iv_max_count   TYPE i OPTIONAL
+      EXPORTING
+        et_invoices    TYPE mty_saved_deliveries
+        et_logs        TYPE bapirettab.
 
     METHODS update_edelivery_users
       IMPORTING

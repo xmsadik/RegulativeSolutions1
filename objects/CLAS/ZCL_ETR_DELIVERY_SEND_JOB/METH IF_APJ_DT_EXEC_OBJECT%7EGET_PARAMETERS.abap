@@ -1,5 +1,12 @@
   METHOD if_apj_dt_exec_object~get_parameters.
-    et_parameter_def = VALUE #( ( selname = 'S_BUKRS'
+    et_parameter_def = VALUE #( ( selname = 'S_DOCUI'
+                                  kind = if_apj_dt_exec_object=>select_option
+                                  datatype = 'C'
+                                  length = 36
+                                  param_text = 'Document UUID (DOCUI)'
+                                  lowercase_ind = abap_true
+                                  changeable_ind = abap_true )
+                                ( selname = 'S_BUKRS'
                                   kind = if_apj_dt_exec_object=>select_option
                                   datatype = 'C'
                                   length = 4
@@ -70,5 +77,11 @@
                                   datatype = 'C'
                                   length = 10
                                   param_text = 'Delivery Type (DLVTY)'
+                                  changeable_ind = abap_true )
+                                ( selname = 'P_UNAME'
+                                  kind = if_apj_dt_exec_object=>parameter
+                                  datatype = 'C'
+                                  length = 12
+                                  param_text = 'Send Logs To (User)'
                                   changeable_ind = abap_true ) ).
   ENDMETHOD.

@@ -14,6 +14,7 @@ define behavior for zetr_ddl_p_outgoing_invoices alias OutgoingInvoices
   use action sendMailToPartner;
   use action sendMailToSelected;
   use action showSummary;
+  use action sendInvoicesBackground;
 }
 
 define behavior for zetr_ddl_p_outgoing_invcont alias InvoiceContents

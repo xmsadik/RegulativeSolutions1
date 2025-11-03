@@ -169,6 +169,9 @@
     ls_document-vkorg = ls_vbrk-vkorg.
     ls_document-vtweg = ls_vbrk-vtweg.
     ls_document-spart = ls_vbrk-spart.
+    ls_document-erdat = ls_vbrk-erdat.
+    ls_document-erzet = ls_vbrk-erzet.
+    ls_document-ernam = ls_vbrk-ernam.
 
     ls_invoice_rule_input-awtyp = iv_awtyp.
     ls_invoice_rule_input-sddty = ls_vbrk-fkart.

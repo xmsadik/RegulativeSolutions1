@@ -170,6 +170,8 @@ CLASS lhc_zetr_ddl_i_outgoing_delive DEFINITION INHERITING FROM cl_abap_behavior
       IMPORTING keys FOR ACTION OutgoingDeliveries~createWithoutReference.
     METHODS get_global_authorizations FOR GLOBAL AUTHORIZATION
       IMPORTING REQUEST requested_authorizations FOR OutgoingDeliveries RESULT result.
+    METHODS sendDeliveriesBackground FOR MODIFY
+      IMPORTING keys FOR ACTION OutgoingDeliveries~sendDeliveriesBackground RESULT result.
 
 ENDCLASS.
 
@@ -755,6 +757,67 @@ CLASS lhc_zetr_ddl_i_outgoing_delive IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD get_global_authorizations.
+  ENDMETHOD.
+
+  METHOD sendDeliveriesBackground.
+    READ ENTITIES OF zetr_ddl_i_outgoing_deliveries IN LOCAL MODE
+      ENTITY Outgoingdeliveries
+      ALL FIELDS WITH
+      CORRESPONDING #( keys )
+      RESULT DATA(deliveryList).
+    SORT deliveryList BY DocumentType CompanyCode DocumentNumber FiscalYear.
+    DELETE ADJACENT DUPLICATES FROM deliveryList COMPARING DocumentType CompanyCode DocumentNumber FiscalYear.
+    SORT deliveryList BY CompanyCode ProfileID DocumentDate DocumentNumber.
+
+    TRY.
+        DATA: ls_job_info TYPE cl_apj_rt_api=>ty_job_info.
+        GET TIME STAMP FIELD DATA(lv_timestamp).
+        TRY.
+            DATA(lv_timezone) = cl_abap_context_info=>get_user_time_zone( ).
+          CATCH cx_abap_context_info_error.
+        ENDTRY.
+        lv_timestamp += 1000.
+        DATA(lt_parameters) = VALUE cl_apj_rt_api=>tt_job_parameter_value( FOR Delivery IN deliveryList
+                                                ( name = 'S_DOCUI'
+                                                  t_value = VALUE #( ( sign = 'I'
+                                                                       option = 'EQ'
+                                                                       low = Delivery-DocumentUUID ) ) ) ).
+        APPEND VALUE #( name = 'P_UNAME' t_value = VALUE #( ( sign = 'I' option = 'EQ' low = sy-uname ) ) ) TO lt_parameters.
+        cl_apj_rt_api=>schedule_job_commit_immstart(
+          EXPORTING
+              iv_job_template_name = 'ZETR_AJT_DELIVERY_AUTO_SEND'
+              iv_job_text = 'eSolutions - Send Outgoing Deliveries'
+              is_start_info = VALUE #( start_immediately = abap_true )
+              it_job_parameter_value = lt_parameters
+          IMPORTING
+            ev_jobname = DATA(lv_jobname)
+            ev_jobcount = DATA(lv_jobcount)
+            et_message = DATA(lt_message) ).
+        IF lv_jobname IS INITIAL OR line_exists( lt_message[ type = 'E' ] ).
+          LOOP AT lt_message INTO DATA(ls_message).
+            APPEND VALUE #( %msg = new_message( id = ls_message-id
+                                                number = ls_message-number
+                                                v1 = ls_message-message_v1
+                                                v2 = ls_message-message_v2
+                                                v3 = ls_message-message_v3
+                                                v4 = ls_message-message_v4
+                                                severity = CONV #( ls_message-type ) ) ) TO reported-outgoingdeliveries.
+          ENDLOOP.
+        ELSE.
+          APPEND VALUE #( %msg = new_message( id       = 'ZETR_COMMON'
+                                              number   = '000'
+                                              v1       = COND #( WHEN sy-langu = 'T' THEN `Gönderim başlatıldı : ` ELSE `Job Started : ` )
+                                              v2       = lv_jobname
+                                              severity = if_abap_behv_message=>severity-success ) ) TO reported-outgoingdeliveries.
+        ENDIF.
+      CATCH cx_apj_rt INTO DATA(lx_regulative_exception).
+        APPEND VALUE #( %msg = new_message_with_text(
+                                 severity = if_abap_behv_message=>severity-error
+                                 text = lx_regulative_exception->get_text( ) ) ) TO reported-outgoingdeliveries.
+    ENDTRY.
+
+    result = VALUE #( FOR Delivery IN DeliveryList ( %tky   = Delivery-%tky
+                                                     %param = Delivery ) ).
   ENDMETHOD.
 
 ENDCLASS.

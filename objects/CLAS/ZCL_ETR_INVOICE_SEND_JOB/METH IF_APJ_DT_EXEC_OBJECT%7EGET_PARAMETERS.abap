@@ -89,5 +89,11 @@
                                   datatype = 'C'
                                   length = 10
                                   param_text = 'Invoice Type (INVTY)'
+                                  changeable_ind = abap_true )
+                                ( selname = 'P_UNAME'
+                                  kind = if_apj_dt_exec_object=>parameter
+                                  datatype = 'C'
+                                  length = 12
+                                  param_text = 'Send Logs To (User)'
                                   changeable_ind = abap_true ) ).
   ENDMETHOD.
