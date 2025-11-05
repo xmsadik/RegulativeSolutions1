@@ -18,7 +18,9 @@ authorization master ( instance )
       DefaultAlias = defal;
       TaxpayerType = txpty;
     }
-  field ( readonly ) Taxid, RecordNo, Aliass, RegisterDate, RegisterTime, Title, TaxpayerType, TaxpayerTypeText;
+  //  field ( readonly ) Taxid, RecordNo, Aliass, RegisterDate, RegisterTime, Title, TaxpayerType, TaxpayerTypeText;
+  field ( readonly : update ) Taxid, RecordNo;
+  field ( mandatory ) Title, RegisterDate, TaxpayerType;
   create;
   update;
   delete;

@@ -7,9 +7,9 @@
     "DDLXNAME":"ZETR_DDL_E_INVOICE_USERS",
     "VERSION":"A",
     "CHANGED_BY":"SAP_CUSTOMER",
-    "CHANGED_ON":"2023-12-06",
-    "CHANGED_AT":"16:18:57",
-    "UUID":"77E41BC4D9AD1EDEA58A6509FE8E1EC3",
+    "CHANGED_ON":"2025-11-05",
+    "CHANGED_AT":"08:09:32",
+    "UUID":"FA163EBBCF7E1FE0AEC3D84F3758269F",
     "ABAP_LANGUAGE_VERSION":"5"
    }
   ]
@@ -34,7 +34,7 @@
     "DDLXNAME":"ZETR_DDL_E_INVOICE_USERS",
     "VERSION":"A",
     "UUID":"",
-    "SOURCE":"@Metadata.layer: #CORE\r\n@Search.searchable: true\r\n@UI:{\r\nheaderInfo:{ typeNamePlural: 'eInvoice Users',\r\n             typeName: 'eInvoice User',\r\n             title:{ type: #STANDARD, label: 'eInvoice Users', value: 'Title' } } }\r\n\r\nannotate entity zetr_ddl_p_invoice_users with\r\n{\r\n  @UI.facet: [ { id:              'Users',\r\n                 purpose:         #STANDARD,\r\n                 type:            #IDENTIFICATION_REFERENCE,\r\n                 label:           'eInvoice Users',\r\n                 position:        10 } ]\r\n  @UI: { lineItem:       [ { position: 10, importance: #HIGH },\r\n         { type: #FOR_ACTION, dataAction: 'modify_list', label: 'Update' } ],\r\n         identification: [{ position: 10 }],\r\n         selectionField: [ { position: 10 } ] }\r\n  @Search.defaultSearchElement: true\r\n  TaxID;\r\n  @UI.hidden: true\r\n  RecordNo;\r\n  @UI: { lineItem:       [ { position: 20, importance: #HIGH } ],\r\n         identification: [{ position: 20 }],\r\n         selectionField: [ { position: 20 } ] }\r\n  Title;\r\n  @UI: { lineItem: [ { position: 30 } ],\r\n         identification: [{ position: 30 }] }\r\n  Aliass;\r\n  @UI: { lineItem: [ { position: 40 } ],\r\n         identification: [{ position: 30 }],\r\n         selectionField: [ { position: 30 } ] }\r\n  RegisterDate;\r\n  @UI: { lineItem: [ { position: 50 } ],\r\n         identification: [{ position: 50 }] }\r\n  RegisterTime;\r\n  @UI: { lineItem: [ { position: 60 } ],\r\n         identification: [{ position: 60 }] }\r\n  TaxpayerType;\r\n  @UI.hidden: true\r\n  TaxpayerTypeText;\r\n  @UI: { lineItem: [ { position: 70 } ],\r\n         identification: [{ position: 70 }] }\r\n  DefaultAlias;\r\n}"
+    "SOURCE":"@Metadata.layer: #CORE\r\n@Search.searchable: true\r\n@UI:{\r\nheaderInfo:{ typeNamePlural: 'eInvoice Users',\r\n             typeName: 'eInvoice User',\r\n             title:{ type: #STANDARD, label: 'eInvoice Users', value: 'Title' } } }\r\n\r\nannotate entity zetr_ddl_p_invoice_users with\r\n{\r\n  @UI.facet: [ { id:              'Users',\r\n                 purpose:         #STANDARD,\r\n                 type:            #IDENTIFICATION_REFERENCE,\r\n                 label:           'eInvoice Users',\r\n                 position:        10 } ]\r\n  @UI: { lineItem:       [ { position: 10, importance: #HIGH },\r\n         { type: #FOR_ACTION, dataAction: 'modify_list', label: 'Update' } ],\r\n         identification: [{ position: 10 }],\r\n         selectionField: [ { position: 10 } ] }\r\n  @Search.defaultSearchElement: true\r\n  TaxID;\r\n  @UI.hidden: true\r\n  RecordNo;\r\n  @UI: { lineItem:       [ { position: 20, importance: #HIGH } ],\r\n         identification: [{ position: 20 }],\r\n         selectionField: [ { position: 20 } ] }\r\n  Title;\r\n  @UI: { lineItem: [ { position: 30 } ],\r\n         identification: [{ position: 30 }] }\r\n  Aliass;\r\n  @UI: { lineItem: [ { position: 40 } ],\r\n         identification: [{ position: 30 }],\r\n         selectionField: [ { position: 30 } ] }\r\n  RegisterDate;\r\n  @UI: { lineItem: [ { position: 50 } ],\r\n         identification: [{ position: 50 }] }\r\n  RegisterTime;\r\n  @UI: { lineItem: [ { position: 60 } ],\r\n         identification: [{ position: 60 }] }\r\n  @Consumption.valueHelpDefinition: [ { entity: { name: 'ZETR_DDL_VH_TAXPAYER_TYPE', element: 'TaxpayerType' }}]\r\n  TaxpayerType;\r\n  @UI.hidden: true\r\n  TaxpayerTypeText;\r\n  @UI: { lineItem: [ { position: 70 } ],\r\n         identification: [{ position: 70 }] }\r\n  DefaultAlias;\r\n}"
    }
   ]
  },
@@ -248,6 +248,20 @@
    {
     "DDLXNAME":"ZETR_DDL_E_INVOICE_USERS",
     "ELEMENT":"TAXPAYERTYPE",
+    "NAME":"CONSUMPTION.VALUEHELPDEFINITION$1$.ENTITY.ELEMENT",
+    "ELEMENT_TYPE":"S",
+    "VALUE":"'TaxpayerType'"
+   },
+   {
+    "DDLXNAME":"ZETR_DDL_E_INVOICE_USERS",
+    "ELEMENT":"TAXPAYERTYPE",
+    "NAME":"CONSUMPTION.VALUEHELPDEFINITION$1$.ENTITY.NAME",
+    "ELEMENT_TYPE":"S",
+    "VALUE":"'ZETR_DDL_VH_TAXPAYER_TYPE'"
+   },
+   {
+    "DDLXNAME":"ZETR_DDL_E_INVOICE_USERS",
+    "ELEMENT":"TAXPAYERTYPE",
     "NAME":"UI.IDENTIFICATION$1$.POSITION",
     "ELEMENT_TYPE":"S",
     "VALUE":"60"
@@ -381,8 +395,8 @@
     "EXTENDED_ARTIFACT":"ZETR_DDL_P_INVOICE_USERS",
     "VARIANT":"",
     "LAYER":1500,
-    "DT_UUID":"77E41BC4D9AD1EDEA58A6509FE8E1EC3",
-    "RT_HASH":"926DAF8683A2D2D71B6AC303FCC158F40C27010F",
+    "DT_UUID":"FA163EBBCF7E1FE0AEC3D84F3758269F",
+    "RT_HASH":"08B72CD33811D946F81081F2CFEC236726DC5308",
     "GEN_VERSION":"0",
     "TYPE":"0"
    }
@@ -401,6 +415,16 @@
     "REF_OBJECT_SUBTYPE":"DOF",
     "REF_OBJECT_NAME":"ZETR_DDL_P_INVOICE_USERS",
     "REF_OBJECT_ELEMENT":"TITLE"
+   },
+   {
+    "DDLXNAME":"ZETR_DDL_E_INVOICE_USERS",
+    "ELEMENT":"TAXPAYERTYPE",
+    "NAME":"CONSUMPTION.VALUEHELPDEFINITION$1$.ENTITY.NAME",
+    "PATH":"ZETR_DDL_VH_TAXPAYER_TYPE",
+    "REF_OBJECT_TYPE":"STOB",
+    "REF_OBJECT_SUBTYPE":"DO",
+    "REF_OBJECT_NAME":"ZETR_DDL_VH_TAXPAYER_TYPE",
+    "REF_OBJECT_ELEMENT":""
    }
   ]
  },
