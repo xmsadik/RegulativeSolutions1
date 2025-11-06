@@ -134,11 +134,13 @@ authorization dependent by _companyInformation
 {
   mapping for zetr_t_emlst
     {
-      CompanyCode  = bukrs;
-      ListItem     = buzei;
-      TaxID        = taxid;
-      EMailTime    = emtim;
-      EMailAddress = email;
+      CompanyCode    = bukrs;
+      ListItem       = buzei;
+      TaxID          = taxid;
+      EMailTime      = emtim;
+      EMailAddress   = email;
+      IncludeUBLFile = inubl;
+      IncludePDFFile = inpdf;
     }
   update;
   delete;

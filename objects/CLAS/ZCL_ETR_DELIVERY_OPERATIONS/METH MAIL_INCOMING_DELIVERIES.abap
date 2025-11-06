@@ -38,6 +38,31 @@
           lo_mail->set_subject( 'Gelen e-İrsaliyeler Hk.' ).
           lo_mail->set_main( cl_bcs_mail_textpart=>create_instance( iv_content      = lv_html
                                                                     iv_content_type = 'text/html' ) ).
+          IF ls_email-inpdf = abap_true OR ls_email-inubl = abap_true.
+            LOOP AT lt_document_list INTO ls_document_line.
+              TRY.
+                  DATA(lo_delivery_operations) = zcl_etr_delivery_operations=>factory( iv_company = ls_document_line-CompanyCode ).
+
+                  IF ls_email-inpdf = abap_true.
+                    DATA(lv_content) = lo_delivery_operations->incoming_edelivery_download( iv_document_uid = ls_document_line-DocumentUUID
+                                                                                            iv_content_type = 'PDF'
+                                                                                            iv_create_log   = '' ).
+                    lo_mail->add_attachment( cl_bcs_mail_binarypart=>create_instance( iv_content      = lv_content
+                                                                                      iv_content_type = 'application/pdf'
+                                                                                      iv_filename     = ls_document_line-DeliveryID && '.pdf' ) ).
+                  ENDIF.
+                  IF ls_email-inubl = abap_true.
+                    lv_content = lo_delivery_operations->incoming_edelivery_download( iv_document_uid = ls_document_line-DocumentUUID
+                                                                                      iv_content_type = 'UBL'
+                                                                                      iv_create_log   = '' ).
+                    lo_mail->add_attachment( cl_bcs_mail_binarypart=>create_instance( iv_content      = lv_content
+                                                                                      iv_content_type = 'text/xml'
+                                                                                      iv_filename     = ls_document_line-DeliveryID && '.xml' ) ).
+                  ENDIF.
+                CATCH zcx_etr_regulative_exception.
+              ENDTRY.
+            ENDLOOP.
+          ENDIF.
           lo_mail->send( ).
         CATCH cx_bcs_mail INTO DATA(lx_mail).
       ENDTRY.

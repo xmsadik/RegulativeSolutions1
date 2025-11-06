@@ -36,6 +36,12 @@ CLASS zcl_etr_json_xml_tools DEFINITION
       RETURNING
         VALUE(es_return) TYPE bapiret2.
 
+    METHODS xml_formatter
+      IMPORTING
+        xml              TYPE xstring
+      RETURNING
+        VALUE(es_return) TYPE bapiret2.
+
     METHODS json_to_table
       IMPORTING
         json             TYPE string

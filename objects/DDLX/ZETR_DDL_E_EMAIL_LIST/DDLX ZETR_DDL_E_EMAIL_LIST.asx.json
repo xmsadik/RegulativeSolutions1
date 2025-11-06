@@ -7,9 +7,9 @@
     "DDLXNAME":"ZETR_DDL_E_EMAIL_LIST",
     "VERSION":"A",
     "CHANGED_BY":"SAP_CUSTOMER",
-    "CHANGED_ON":"2024-12-25",
-    "CHANGED_AT":"12:35:20",
-    "UUID":"CB92D17136801EEFB0D7966AE910E2FF",
+    "CHANGED_ON":"2025-11-05",
+    "CHANGED_AT":"10:30:02",
+    "UUID":"FA163EBBCF7E1FE0AEC64C5F17E7069F",
     "ABAP_LANGUAGE_VERSION":"5"
    }
   ]
@@ -34,7 +34,7 @@
     "DDLXNAME":"ZETR_DDL_E_EMAIL_LIST",
     "VERSION":"A",
     "UUID":"",
-    "SOURCE":"@Metadata.layer: #CORE\r\n@UI:{\r\nheaderInfo:{\r\n                typeNamePlural: 'E-Mail List',\r\n                typeName: 'E-Mail List',\r\n                title:{ type: #STANDARD, label: 'E-Mail List', value: 'EMailAddress' }\r\n           }\r\n}\r\nannotate entity zetr_ddl_p_email_list with\r\n{\r\n  @UI.facet: [ { id:            'List',\r\n                 purpose:       #STANDARD,\r\n                 type:          #IDENTIFICATION_REFERENCE,\r\n                 label:         'E-Mail List',\r\n                 position:      10 }  ]\r\n  @UI.hidden: true\r\n  CompanyCode;\r\n  @UI: { lineItem: [ { position: 10 } ],\r\n         identification: [{ position: 10 }] }\r\n  ListItem;\r\n  @UI: { lineItem: [ { position: 20 } ],\r\n         identification: [{ position: 20 }] }\r\n  TaxID;\r\n  @UI: { lineItem: [ { position: 30 } ],\r\n         identification: [{ position: 30 }] }\r\n  @Consumption.valueHelpDefinition: [ { entity: { name: 'zetr_ddl_vh_email_time', element: 'EMailTime' }}]\r\n  EMailTime;\r\n  @UI.hidden: true\r\n  EMailTimeText;\r\n  @UI: { lineItem: [ { position: 40 } ],\r\n         identification: [{ position: 40 }] }\r\n  EMailAddress;\r\n}"
+    "SOURCE":"@Metadata.layer: #CORE\r\n@UI:{\r\nheaderInfo:{\r\n                typeNamePlural: 'E-Mail List',\r\n                typeName: 'E-Mail List',\r\n                title:{ type: #STANDARD, label: 'E-Mail List', value: 'EMailAddress' }\r\n           }\r\n}\r\nannotate entity zetr_ddl_p_email_list with\r\n{\r\n  @UI.facet: [ { id:            'List',\r\n                 purpose:       #STANDARD,\r\n                 type:          #IDENTIFICATION_REFERENCE,\r\n                 label:         'E-Mail List',\r\n                 position:      10 }  ]\r\n  @UI.hidden: true\r\n  CompanyCode;\r\n  @UI: { lineItem: [ { position: 10 } ],\r\n         identification: [{ position: 10 }] }\r\n  ListItem;\r\n  @UI: { lineItem: [ { position: 20 } ],\r\n         identification: [{ position: 20 }] }\r\n  TaxID;\r\n  @UI: { lineItem: [ { position: 30 } ],\r\n         identification: [{ position: 30 }] }\r\n  @Consumption.valueHelpDefinition: [ { entity: { name: 'zetr_ddl_vh_email_time', element: 'EMailTime' }}]\r\n  EMailTime;\r\n  @UI.hidden: true\r\n  EMailTimeText;\r\n  @UI: { lineItem: [ { position: 40 } ],\r\n         identification: [{ position: 40 }] }\r\n  EMailAddress;\r\n  @UI: { lineItem: [ { position: 50 } ],\r\n         identification: [{ position: 50 }] }\r\n  IncludeUBLFile;\r\n  @UI: { lineItem: [ { position: 60 } ],\r\n         identification: [{ position: 60 }] }\r\n  IncludePDFFile;\r\n}"
    }
   ]
  },
@@ -170,6 +170,34 @@
    },
    {
     "DDLXNAME":"ZETR_DDL_E_EMAIL_LIST",
+    "ELEMENT":"INCLUDEPDFFILE",
+    "NAME":"UI.IDENTIFICATION$1$.POSITION",
+    "ELEMENT_TYPE":"S",
+    "VALUE":"60"
+   },
+   {
+    "DDLXNAME":"ZETR_DDL_E_EMAIL_LIST",
+    "ELEMENT":"INCLUDEPDFFILE",
+    "NAME":"UI.LINEITEM$1$.POSITION",
+    "ELEMENT_TYPE":"S",
+    "VALUE":"60"
+   },
+   {
+    "DDLXNAME":"ZETR_DDL_E_EMAIL_LIST",
+    "ELEMENT":"INCLUDEUBLFILE",
+    "NAME":"UI.IDENTIFICATION$1$.POSITION",
+    "ELEMENT_TYPE":"S",
+    "VALUE":"50"
+   },
+   {
+    "DDLXNAME":"ZETR_DDL_E_EMAIL_LIST",
+    "ELEMENT":"INCLUDEUBLFILE",
+    "NAME":"UI.LINEITEM$1$.POSITION",
+    "ELEMENT_TYPE":"S",
+    "VALUE":"50"
+   },
+   {
+    "DDLXNAME":"ZETR_DDL_E_EMAIL_LIST",
     "ELEMENT":"LISTITEM",
     "NAME":"UI.IDENTIFICATION$1$.POSITION",
     "ELEMENT_TYPE":"S",
@@ -269,8 +297,8 @@
     "EXTENDED_ARTIFACT":"ZETR_DDL_P_EMAIL_LIST",
     "VARIANT":"",
     "LAYER":1500,
-    "DT_UUID":"CB92D17136801EEFB0D7966AE910E2FF",
-    "RT_HASH":"C3D9CF9C468622AAD416874D5440435C563CB51C",
+    "DT_UUID":"FA163EBBCF7E1FE0AEC64C5F17E7069F",
+    "RT_HASH":"C904E243C1274A6FF25C571592DB1767DFED926F",
     "GEN_VERSION":"0",
     "TYPE":"0"
    }
