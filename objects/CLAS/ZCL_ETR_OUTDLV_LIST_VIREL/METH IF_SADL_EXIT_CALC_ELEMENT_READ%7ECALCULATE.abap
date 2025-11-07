@@ -4,54 +4,37 @@
     CHECK lt_output IS NOT INITIAL.
 
     LOOP AT lt_output ASSIGNING FIELD-SYMBOL(<ls_output>).
-*      <ls_output>-DocumentDisplayURL = 'https://' && zcl_etr_regulative_common=>get_ui_url( ) && '/ui#'.
-*      CASE <ls_output>-DocumentType(4).
-*        WHEN 'VBRK'.
-*          <ls_output>-DocumentDisplayURL = <ls_output>-DocumentDisplayURL &&
-*                                           'BillingDocument-displayBillingDocument?BillingDocument=' && <ls_output>-DocumentNumber.
-*        WHEN 'RMRP'.
-*          <ls_output>-DocumentDisplayURL = <ls_output>-DocumentDisplayURL &&
-*                                           'SupplierInvoice-displayAdvanced?SupplierInvoice=' && <ls_output>-DocumentNumber &&
-*                                           '&FiscalYear=' && <ls_output>-FiscalYear.
-*        WHEN 'BKPF'.
-*          <ls_output>-DocumentDisplayURL = <ls_output>-DocumentDisplayURL &&
-*                                           'GLAccount-displayGLLineItemReportingView?AccountingDocument=' && <ls_output>-DocumentNumber &&
-*                                           '&CompanyCode=' && <ls_output>-CompanyCode &&
-*                                           '&FiscalYear=' && <ls_output>-FiscalYear.
-*      ENDCASE.
+      IF line_exists( it_requested_calc_elements[ table_line = 'PDFCONTENTURL' ] ) OR
+         line_exists( it_requested_calc_elements[ table_line = 'HTMLCONTENTURL' ] ) OR
+         line_exists( it_requested_calc_elements[ table_line = 'UBLCONTENTURL' ] ).
+        TRY.
+            cl_system_uuid=>convert_uuid_c22_static(
+              EXPORTING
+                uuid = <ls_output>-documentuuid
+              IMPORTING
+                uuid_c36 = DATA(lv_uuid) ).
+          CATCH cx_uuid_error.
+            "handle exception
+        ENDTRY.
+        <ls_output>-PDFContentUrl = "'https://' && zcl_etr_regulative_common=>get_ui_url( ) &&
+                                    '/sap/opu/odata/sap/ZETR_DDL_B_OUTG_DELIVERIES/Contents(DocumentUUID=guid''' &&
+                                    lv_uuid && ''',ContentType=''PDF'',DocumentType=''OUTDLVDOC'')/$value'.
+        <ls_output>-HTMLContentUrl = "'https://' && zcl_etr_regulative_common=>get_ui_url( ) &&
+                                    '/sap/opu/odata/sap/ZETR_DDL_B_OUTG_DELIVERIES/Contents(DocumentUUID=guid''' &&
+                                    lv_uuid && ''',ContentType=''HTML'',DocumentType=''OUTDLVDOC'')/$value'.
+        <ls_output>-UBLContentUrl = "'https://' && zcl_etr_regulative_common=>get_ui_url( ) &&
+                                    '/sap/opu/odata/sap/ZETR_DDL_B_OUTG_DELIVERIES/Contents(DocumentUUID=guid''' &&
+                                    lv_uuid && ''',ContentType=''UBL'',DocumentType=''OUTDLVDOC'')/$value'.
 
-      TRY.
-          cl_system_uuid=>convert_uuid_c22_static(
-            EXPORTING
-              uuid = <ls_output>-documentuuid
-            IMPORTING
-              uuid_c36 = DATA(lv_uuid) ).
-        CATCH cx_uuid_error.
-          "handle exception
-      ENDTRY.
-*      IF <ls_output>-StatusCode <> '2' AND <ls_output>-StatusCode <> ''.
-      <ls_output>-PDFContentUrl = "'https://' && zcl_etr_regulative_common=>get_ui_url( ) &&
-                                  '/sap/opu/odata/sap/ZETR_DDL_B_OUTG_DELIVERIES/Contents(DocumentUUID=guid''' &&
-                                  lv_uuid && ''',ContentType=''PDF'',DocumentType=''OUTDLVDOC'')/$value'.
-*                                      lv_uuid && ''',ContentType=''PDF'')/$value")'.
-*      ELSE.
-      <ls_output>-HTMLContentUrl = "'https://' && zcl_etr_regulative_common=>get_ui_url( ) &&
-                                  '/sap/opu/odata/sap/ZETR_DDL_B_OUTG_DELIVERIES/Contents(DocumentUUID=guid''' &&
-                                  lv_uuid && ''',ContentType=''HTML'',DocumentType=''OUTDLVDOC'')/$value'.
-*                                      lv_uuid && ''',ContentType=''PDF'')/$value")'.
-*      ENDIF.
-
-      <ls_output>-UBLContentUrl = "'https://' && zcl_etr_regulative_common=>get_ui_url( ) &&
-                                  '/sap/opu/odata/sap/ZETR_DDL_B_OUTG_DELIVERIES/Contents(DocumentUUID=guid''' &&
-                                  lv_uuid && ''',ContentType=''UBL'',DocumentType=''OUTDLVDOC'')/$value'.
-
-      IF <ls_output>-ResponseUUID IS NOT INITIAL.
+      ENDIF.
+      IF <ls_output>-ResponseUUID IS NOT INITIAL AND line_exists( it_requested_calc_elements[ 'RESPONSECONTENTURL' ] ).
         <ls_output>-ResponseContentUrl = 'https://' && zcl_etr_regulative_common=>get_ui_url( ) &&
                                     '/sap/opu/odata/sap/ZETR_DDL_B_OUTG_DELIVERIES/Contents(DocumentUUID=guid''' &&
                                     lv_uuid && ''',ContentType=''PDF'',DocumentType=''OUTDLVRES'')/$value'.
       ENDIF.
 
-      IF lines( lt_output ) = 1.
+      IF line_exists( it_requested_calc_elements[ table_line = 'HTMLCONTENT' ] ) OR
+         line_exists( it_requested_calc_elements[ table_line = 'UBLCONTENT' ] ).
         DO 2 TIMES.
           DATA(lv_conty) = COND zetr_e_dctyp( WHEN sy-index = 1 THEN 'HTML' ELSE 'UBL' ).
           DATA(lv_field) = COND string( WHEN sy-index = 1 THEN 'HTMLContent' ELSE 'UBLContent' ).

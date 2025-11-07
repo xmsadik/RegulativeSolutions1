@@ -29,7 +29,12 @@
               et_custom_parameters  = DATA(lt_custom_parameters) ).
           CASE iv_content_type.
             WHEN 'UBL'.
-              rv_delivery_data = lv_delivery_ubl.
+              CALL TRANSFORMATION zetr_xml_formatter
+                SOURCE XML lv_delivery_ubl
+                RESULT XML rv_delivery_data.
+              IF rv_delivery_data IS INITIAL.
+                rv_delivery_data = lv_delivery_ubl.
+              ENDIF.
             WHEN OTHERS.
               IF ls_document-xsltt IS INITIAL.
                 SELECT SINGLE xsltt

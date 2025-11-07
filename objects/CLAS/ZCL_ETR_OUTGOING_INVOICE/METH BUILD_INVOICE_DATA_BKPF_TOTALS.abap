@@ -27,8 +27,8 @@
       ENDLOOP.
     ENDIF.
 
-    fill_common_tax_totals( ).
-*    build_invoice_data_bkpf_tax( ).
+*    fill_common_tax_totals( ).
+    build_invoice_data_bkpf_tax( ).
 
     IF ms_invoice_ubl-legalmonetarytotal-allowancetotalamount-content IS NOT INITIAL.
       ms_invoice_ubl-legalmonetarytotal-allowancetotalamount-currencyid = ms_accdoc_data-bkpf-waers.
