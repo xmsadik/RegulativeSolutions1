@@ -84,9 +84,6 @@
     METHODS build_invoice_data_bkpf_totals
       RAISING
         zcx_etr_regulative_exception .
-    METHODS build_invoice_data_bkpf_tax
-      RAISING
-        zcx_etr_regulative_exception .
     METHODS build_invoice_data_bkpf_notes
       RAISING
         zcx_etr_regulative_exception .
