@@ -113,8 +113,12 @@
             ENDIF.
             IF lv_regex IS NOT INITIAL.
 *              FIND REGEX lv_regex IN ls_xml_line-value SUBMATCHES lv_submatch.
-              lv_submatch = zcl_etr_regulative_common=>check_regex( iv_regex = lv_regex
-                                                                    iv_text  = ls_xml_line-value ).
+              TRY.
+                  lv_submatch = zcl_etr_regulative_common=>check_regex( iv_regex = lv_regex
+                                                                        iv_text  = ls_xml_line-value ).
+                CATCH cx_sy_regex_too_complex INTO DATA(lx_sy_regex_too_complex).
+                  DATA(lv_regex_error) = lx_sy_regex_too_complex->get_text( ).
+              ENDTRY.
               CHECK lv_submatch IS NOT INITIAL.
 *              CHECK sy-subrc = 0.
             ELSE.

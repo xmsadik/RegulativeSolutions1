@@ -113,6 +113,11 @@ INTERFACE zif_etr_common_ubl21
       ExternalReference            TYPE ExternalReferenceType,
     END OF AttachmentType,
 
+    BEGIN OF CountryType,
+      IdentificationCode TYPE CodeType,
+      Name               TYPE TextType,
+    END OF CountryType,
+
     BEGIN OF AddressType,
       Id                  TYPE IdentifierType,
       Postbox             TYPE TextType,
@@ -126,7 +131,7 @@ INTERFACE zif_etr_common_ubl21
       PostalZone          TYPE TextType,
       Region              TYPE TextType,
       District            TYPE TextType,
-      Country             TYPE TextType,
+      Country             TYPE CountryType,
     END OF AddressType,
 
     BEGIN OF LocationType,
@@ -207,6 +212,17 @@ INTERFACE zif_etr_common_ubl21
       IdentityDocumentReference TYPE DocumentReferenceType,
     END OF PersonType,
 
+    BEGIN OF PartyLegalEntityType,
+      RegistrationName            TYPE TextType,
+      CompanyID                   TYPE IdentifierType,
+      RegistrationDate            TYPE DateType,
+      SoleProprietorshipIndicator TYPE IndicatorType,
+      CorporateStockAmount        TYPE AmountType,
+      FullyPaidSharesIndicator    TYPE IndicatorType,
+      CorporateRegistrationScheme TYPE CorporateRegistrationSchemeTyp,
+      HeadOfficeParty             TYPE xsdany, "Revised
+    END OF PartyLegalEntityType,
+
     BEGIN OF zPartyType,
       WebsiteURI                 TYPE IdentifierType,
       EndpointID                 TYPE IdentifierType,
@@ -216,22 +232,11 @@ INTERFACE zif_etr_common_ubl21
       PostalAddress              TYPE AddressType,
       PhysicalLocation           TYPE LocationType,
       PartyTaxScheme             TYPE PartyTaxSchemeType,
-      PartyLegalEntity           TYPE xsdany, "Revised
+      PartyLegalEntity           TYPE STANDARD TABLE OF PartyLegalEntityType WITH EMPTY KEY,
       Contact                    TYPE ContactType,
       Person                     TYPE PersonType,
       AgentParty                 TYPE xsdany, "Revised
     END OF zPartyType,
-
-    BEGIN OF PartyLegalEntityType,
-      RegistrationName            TYPE TextType,
-      CompanyID                   TYPE IdentifierType,
-      RegistrationDate            TYPE DateType,
-      SoleProprietorshipIndicator TYPE IndicatorType,
-      CorporateStockAmount        TYPE AmountType,
-      FullyPaidSharesIndicator    TYPE IndicatorType,
-      CorporateRegistrationScheme TYPE CorporateRegistrationSchemeTyp,
-      HeadOfficeParty             TYPE zPartyType, "Revised
-    END OF PartyLegalEntityType,
 
     BEGIN OF PartyType,
       WebsiteURI                 TYPE IdentifierType,
@@ -374,11 +379,6 @@ INTERFACE zif_etr_common_ubl21
     BEGIN OF ItemIdentificationType,
       Id TYPE IdentifierType,
     END OF ItemIdentificationType,
-
-    BEGIN OF CountryType,
-      IdentificationCode TYPE CodeType,
-      Name               TYPE TextType,
-    END OF CountryType,
 
     BEGIN OF CommodityClassificationType,
       ItemClassificationCode TYPE CodeType,

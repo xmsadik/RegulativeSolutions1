@@ -71,8 +71,15 @@
               CHECK line_exists( ls_xml_line-atrib[ attr_values = lv_attribute ] ).
             ENDIF.
             IF lv_regex IS NOT INITIAL.
-              FIND REGEX lv_regex IN ls_xml_line-value SUBMATCHES lv_submatch.
-              CHECK sy-subrc = 0.
+*              FIND REGEX lv_regex IN ls_xml_line-value SUBMATCHES lv_submatch.
+*              CHECK sy-subrc = 0.
+              TRY.
+                  lv_submatch = zcl_etr_regulative_common=>check_regex( iv_regex = lv_regex
+                                                                        iv_text  = ls_xml_line-value ).
+                CATCH cx_sy_regex_too_complex INTO DATA(lx_sy_regex_too_complex).
+                  DATA(lv_regex_error) = lx_sy_regex_too_complex->get_text( ).
+              ENDTRY.
+              CHECK lv_submatch IS NOT INITIAL.
             ELSE.
               lv_submatch = ls_xml_line-value.
             ENDIF.
