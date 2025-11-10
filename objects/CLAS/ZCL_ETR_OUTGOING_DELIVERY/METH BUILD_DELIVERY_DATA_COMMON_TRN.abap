@@ -18,7 +18,7 @@
       ls_address-bldno   = ls_postal_address-buildingnumber-content.
       ls_address-cityn   = ls_postal_address-cityname-content.
       ls_address-subdv   = ls_postal_address-citysubdivisionname-content.
-      ls_address-country = ls_postal_address-country-content.
+      ls_address-country = ls_postal_address-country-name-content.
       ls_address-distr   = ls_postal_address-district-content.
       ls_address-pobox   = ls_postal_address-postbox-content.
       ls_address-region  = ls_postal_address-region-content.
@@ -103,7 +103,7 @@
     <ls_delivery>-deliveryaddress-buildingnumber-content = ls_address-bldno.
     <ls_delivery>-deliveryaddress-cityname-content = ls_address-cityn.
     <ls_delivery>-deliveryaddress-citysubdivisionname-content = ls_address-subdv.
-    <ls_delivery>-deliveryaddress-country-content = ls_address-country.
+    <ls_delivery>-deliveryaddress-country-name-content = ls_address-country.
     <ls_delivery>-deliveryaddress-district-content = ls_address-distr.
     <ls_delivery>-deliveryaddress-postbox-content = ls_address-pobox.
     <ls_delivery>-deliveryaddress-region-content = ls_address-region.

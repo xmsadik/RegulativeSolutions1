@@ -45,7 +45,7 @@
     rs_data-postaladdress-citysubdivisionname-content = ls_party_data-subdv.
     rs_data-postaladdress-cityname-content = ls_party_data-cityn.
     rs_data-postaladdress-region-content = ls_party_data-region.
-    rs_data-postaladdress-country-content = ls_party_data-country.
+    rs_data-postaladdress-country-name-content = ls_party_data-country.
     rs_data-contact-electronicmail-content = ls_party_data-email.
     rs_data-contact-telephone-content = ls_party_data-telnm.
     rs_data-contact-telefax-content = ls_party_data-faxnm.

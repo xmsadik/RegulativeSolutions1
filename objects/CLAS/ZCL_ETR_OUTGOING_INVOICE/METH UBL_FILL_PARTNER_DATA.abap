@@ -66,7 +66,7 @@
         FROM I_CountryText
         WHERE Language = @sy-langu
           AND country = @ls_address-country
-        INTO @rs_data-postaladdress-country-content.
+        INTO @rs_data-postaladdress-country-name-content.
     ENDIF.
     IF ls_address-region IS NOT INITIAL.
       SELECT SINGLE regionname

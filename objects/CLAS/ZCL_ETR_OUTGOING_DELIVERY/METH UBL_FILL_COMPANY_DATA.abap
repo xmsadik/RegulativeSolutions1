@@ -22,7 +22,7 @@
     rs_data-postaladdress-citysubdivisionname-content = ls_company-subdv.
     rs_data-postaladdress-cityname-content = ls_company-cityn.
     rs_data-postaladdress-region-content = ls_company-region.
-    rs_data-postaladdress-country-content = ls_company-country.
+    rs_data-postaladdress-country-name-content = ls_company-country.
     rs_data-contact-electronicmail-content = ls_company-email.
     rs_data-contact-telephone-content = ls_company-telnm.
     rs_data-contact-telefax-content = ls_company-faxnm.

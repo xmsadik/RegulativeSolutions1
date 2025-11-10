@@ -10,7 +10,7 @@
           INTO ls_t005t
           WITH TABLE KEY land1 = ms_accdoc_data-bsec-land1.
         IF sy-subrc IS INITIAL.
-          ms_invoice_ubl-accountingcustomerparty-party-postaladdress-country-content = ls_t005t-landx.
+          ms_invoice_ubl-accountingcustomerparty-party-postaladdress-country-name-content = ls_t005t-landx.
         ENDIF.
       ENDIF.
       IF ms_accdoc_data-bsec-regio IS NOT INITIAL.
