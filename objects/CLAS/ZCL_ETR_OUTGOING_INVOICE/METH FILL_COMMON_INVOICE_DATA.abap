@@ -264,6 +264,10 @@
         READ TABLE lt_return_docdat INTO DATA(ls_return_docdat) INDEX lv_index.
         IF sy-subrc = 0.
           REPLACE ALL OCCURRENCES OF '.' IN ls_return_docdat WITH ``.
+          IF strlen( ls_return_docdat ) <> 8.
+            RAISE EXCEPTION TYPE zcx_etr_regulative_exception
+              MESSAGE e245(zetr_common) WITH ls_return_docdat.
+          ENDIF.
           <ls_billingreference>-invoicedocumentreference-issuedate-content = ls_return_docdat+4(4) && '-' &&
                                                                              ls_return_docdat+2(2) && '-' &&
                                                                              ls_return_docdat+0(2).
