@@ -5,7 +5,7 @@
         LEFT OUTER JOIN i_businesspartnertaxnumber AS tax
           ON tax~businesspartner = customer~businesspartner
           AND ( tax~bptaxtype = 'TR2' OR tax~bptaxtype = 'TR3' )
-        LEFT OUTER JOIN zetr_t_inv_ruser AS register
+        LEFT OUTER JOIN zetr_t_dlv_ruser AS register
           ON register~taxid = tax~bptaxnumber
         WHERE customer~customer = @iv_customer
         ORDER BY register~defal DESCENDING
@@ -17,7 +17,7 @@
         LEFT OUTER JOIN i_businesspartnertaxnumber AS tax
           ON tax~businesspartner = supplier~businesspartner
           AND ( tax~bptaxtype = 'TR2' OR tax~bptaxtype = 'TR3' )
-        LEFT OUTER JOIN zetr_t_inv_ruser AS register
+        LEFT OUTER JOIN zetr_t_dlv_ruser AS register
           ON register~taxid = tax~bptaxnumber
         WHERE supplier~supplier = @iv_supplier
         ORDER BY register~defal DESCENDING
@@ -29,7 +29,7 @@
         LEFT OUTER JOIN i_businesspartnertaxnumber AS tax
           ON tax~businesspartner = partner~businesspartner
           AND ( tax~bptaxtype = 'TR2' OR tax~bptaxtype = 'TR3' )
-        LEFT OUTER JOIN zetr_t_inv_ruser AS register
+        LEFT OUTER JOIN zetr_t_dlv_ruser AS register
           ON register~taxid = tax~bptaxnumber
         WHERE partner~businesspartner = @iv_partner
         ORDER BY register~defal DESCENDING

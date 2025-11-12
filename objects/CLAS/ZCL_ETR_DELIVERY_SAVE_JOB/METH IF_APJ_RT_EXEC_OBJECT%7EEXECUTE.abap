@@ -39,7 +39,7 @@
         is_selection   = ls_selections
         iv_save_source = 'J'
       IMPORTING
-        et_invoices    = DATA(lt_deliveries)
+        et_deliveries  = DATA(lt_deliveries)
         et_logs        = DATA(lt_logs) ).
     CHECK lt_logs IS NOT INITIAL.
 

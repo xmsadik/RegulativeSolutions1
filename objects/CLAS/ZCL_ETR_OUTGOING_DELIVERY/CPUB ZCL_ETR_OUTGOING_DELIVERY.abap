@@ -289,7 +289,7 @@ CLASS zcl_etr_outgoing_delivery DEFINITION
       IMPORTING
         iv_save_db               TYPE abap_boolean DEFAULT abap_true
       RETURNING
-        VALUE(rv_invoice_number) TYPE zetr_e_docno
+        VALUE(rv_delivery_number) TYPE zetr_e_docno
       RAISING
         zcx_etr_regulative_exception
         cx_number_ranges.

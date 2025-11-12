@@ -234,11 +234,11 @@
           AND accountingdoccreatedbyuser IN @ls_selection-ernam
           AND isreversal = ''
           AND isreversed = ''
-          AND NOT EXISTS ( SELECT docui FROM zetr_t_ogdlv AS oginv
-                             WHERE oginv~bukrs = bkpf~companycode
-                               AND oginv~belnr = bkpf~accountingdocument
-                               AND oginv~gjahr = bkpf~fiscalyear
-                               AND oginv~awtyp = 'BKPF' )
+          AND NOT EXISTS ( SELECT docui FROM zetr_t_ogdlv
+                             WHERE bukrs = bkpf~companycode
+                               AND belnr = bkpf~accountingdocument
+                               AND gjahr = bkpf~fiscalyear
+                               AND awtyp = 'BKPF' )
         INTO TABLE @lt_deliveries.
     ENDIF.
 
@@ -256,9 +256,9 @@
           AND deliverydocumenttype IN @ls_selection-sddty
           AND creationdate IN @ls_selection-erdat
           AND createdbyuser IN @ls_selection-ernam
-          AND NOT EXISTS ( SELECT docui FROM zetr_t_ogdlv AS oginv
-                            WHERE oginv~belnr = d~DeliveryDocument
-                              AND oginv~awtyp = 'LIKP' )
+          AND NOT EXISTS ( SELECT docui FROM zetr_t_ogdlv
+                            WHERE belnr = d~DeliveryDocument
+                              AND awtyp = 'LIKP' )
         APPENDING TABLE @lt_deliveries.
     ENDIF.
 
@@ -279,10 +279,10 @@
           AND m~creationdate IN @ls_selection-erdat
           AND m~createdbyuser IN @ls_selection-ernam
           AND i~GoodsMovementIsCancelled = ''
-          AND NOT EXISTS ( SELECT docui FROM zetr_t_ogdlv AS oginv
-                             WHERE oginv~belnr = m~MaterialDocument
-                               AND oginv~gjahr = m~MaterialDocumentYear
-                               AND oginv~awtyp = 'MKPF' )
+          AND NOT EXISTS ( SELECT docui FROM zetr_t_ogdlv
+                             WHERE belnr = m~MaterialDocument
+                               AND gjahr = m~MaterialDocumentYear
+                               AND awtyp = 'MKPF' )
         APPENDING TABLE @lt_deliveries.
     ENDIF.
 
@@ -299,7 +299,7 @@
           EXIT.
         ENDIF.
         SELECT COUNT( * )
-          FROM zetr_t_oginv
+          FROM zetr_t_ogdlv
           WHERE bukrs = @ls_delivery-bukrs
             AND awtyp = @ls_delivery-awtyp
             AND belnr = @ls_delivery-belnr
@@ -382,7 +382,7 @@
                   WITH <ls_log>-message_v1 <ls_log>-message_v2 <ls_log>-message_v3 <ls_log>-message_v4
                   INTO <ls_log>-message.
               ENDIF.
-              APPEND INITIAL LINE TO et_invoices ASSIGNING FIELD-SYMBOL(<ls_delivery>).
+              APPEND INITIAL LINE TO et_deliveries ASSIGNING FIELD-SYMBOL(<ls_delivery>).
               <ls_delivery>-bukrs = ls_delivery-bukrs.
               <ls_delivery>-belnr = ls_delivery-belnr.
               <ls_delivery>-gjahr = ls_delivery-gjahr.
@@ -426,7 +426,7 @@
           WHERE documentuuid IN @lt_docui_range
           INTO TABLE @DATA(Lt_saved_deliveries).
         LOOP AT Lt_saved_deliveries INTO DATA(ls_saved_delivery).
-          APPEND INITIAL LINE TO et_invoices ASSIGNING <ls_delivery>.
+          APPEND INITIAL LINE TO et_deliveries ASSIGNING <ls_delivery>.
           <ls_delivery> = CORRESPONDING #( ls_saved_delivery ).
           <ls_delivery>-status = 'Saved'.
           <ls_delivery>-status_criticality = 3.

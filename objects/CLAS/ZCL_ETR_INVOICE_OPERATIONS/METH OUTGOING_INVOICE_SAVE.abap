@@ -37,6 +37,8 @@
 
     CHECK rs_document IS NOT INITIAL.
     rs_document-svsrc = iv_svsrc.
+    rs_document-svdby = sy-uname.
+    GET TIME STAMP FIELD rs_document-svdat.
     INSERT zetr_t_oginv FROM @rs_document.
     DATA lt_contents TYPE TABLE OF zetr_t_arcd.
     lt_contents = VALUE #( ( docty = 'OUTINVDOC'

@@ -73,7 +73,7 @@ CLASS zcl_etr_delivery_operations DEFINITION
         iv_save_source TYPE zetr_e_svsrc OPTIONAL
         iv_max_count   TYPE i OPTIONAL
       EXPORTING
-        et_invoices    TYPE mty_saved_deliveries
+        et_deliveries  TYPE mty_saved_deliveries
         et_logs        TYPE bapirettab.
 
     METHODS update_edelivery_users

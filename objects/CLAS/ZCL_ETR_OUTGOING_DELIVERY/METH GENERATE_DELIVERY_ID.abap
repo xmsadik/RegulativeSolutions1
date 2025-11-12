@@ -99,7 +99,7 @@
     ENDCASE.
 
     IF ms_document-dlvno IS NOT INITIAL.
-      rv_invoice_number = ms_document-dlvno.
+      rv_delivery_number = ms_document-dlvno.
       CHECK iv_save_db = abap_true.
       UPDATE zetr_t_ogdlv
         SET dlvno = @ms_document-dlvno

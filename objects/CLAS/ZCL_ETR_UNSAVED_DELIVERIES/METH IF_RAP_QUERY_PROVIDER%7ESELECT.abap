@@ -39,9 +39,8 @@
           EXPORTING
             is_selection   = ls_selections
             iv_save_source = 'M'
-*            iv_max_count   = CONV #( lv_top )
           IMPORTING
-            et_invoices    = DATA(lt_deliveries) ).
+            et_deliveries  = DATA(lt_deliveries) ).
         LOOP AT lt_deliveries INTO DATA(ls_delivery).
           IF lv_skip IS NOT INITIAL.
             CHECK sy-tabix > lv_skip.
