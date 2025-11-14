@@ -35,33 +35,60 @@
       LOOP AT lt_identifications INTO DATA(ls_identifications).
         APPEND INITIAL LINE TO rs_data-partyidentification ASSIGNING FIELD-SYMBOL(<ls_party_identification>).
         CASE ls_identifications-prtid.                                            .
-          WHEN 'VKN'        . <ls_party_identification>-schemeid = 'VKN'                     .
-          WHEN 'TCKN'       . <ls_party_identification>-schemeid = 'TCKN'                    .
-          WHEN 'HIZMETNO'   . <ls_party_identification>-schemeid = 'HIZMETNO'                .
-          WHEN 'MUSTERINO'  . <ls_party_identification>-schemeid = 'MUSTERINO'               .
-          WHEN 'TESISATNO'  . <ls_party_identification>-schemeid = 'TESISATNO'               .
-          WHEN 'TELEFONNO'  . <ls_party_identification>-schemeid = 'TELEFONNO'               .
-          WHEN 'DISTNO'     . <ls_party_identification>-schemeid = 'DISTRIBUTORNO'           .
-          WHEN 'TICSICNO'   . <ls_party_identification>-schemeid = 'TICARETSICILNO'          .
-          WHEN 'TAPDKNO'    . <ls_party_identification>-schemeid = 'TAPDKNO'                 .
-          WHEN 'BAYINO'     . <ls_party_identification>-schemeid = 'BAYINO'                  .
-          WHEN 'ABONENO'    . <ls_party_identification>-schemeid = 'ABONENO'                 .
-          WHEN 'SAYACNO'    . <ls_party_identification>-schemeid = 'SAYACNO'                 .
-          WHEN 'EPDKNO'     . <ls_party_identification>-schemeid = 'EPDKNO'                  .
-          WHEN 'SUBENO'     . <ls_party_identification>-schemeid = 'SUBENO'                  .
-          WHEN 'PASAPORTNO' . <ls_party_identification>-schemeid = 'PASAPORTNO'              .
-          WHEN 'URETICINO'  . <ls_party_identification>-schemeid = 'URETICINO'               .
-          WHEN 'CIFTCINO'   . <ls_party_identification>-schemeid = 'CIFTCINO'                .
-          WHEN 'IMALATCINO' . <ls_party_identification>-schemeid = 'IMALATCINO'              .
-          WHEN 'DOSYANO'    . <ls_party_identification>-schemeid = 'DOSYANO'                 .
-          WHEN 'HASTANO'    . <ls_party_identification>-schemeid = 'HASTANO'                 .
-          WHEN 'MERSISNO'   . <ls_party_identification>-schemeid = 'MERSISNO'                .
-          WHEN 'ARACI_VKN'  . <ls_party_identification>-schemeid = 'ARACIKURUMVKN'           .
-          WHEN 'ARACI_ETK'  . <ls_party_identification>-schemeid = 'ARACIKURUMETIKET'        .
-          WHEN 'GTB_REFNO'  . <ls_party_identification>-schemeid = 'GTB_REFNO'               .
-          WHEN 'GCB_TESCIL' . <ls_party_identification>-schemeid = 'GCB_TESCILNO'            .
-          WHEN 'GTB_IHRTAR' . <ls_party_identification>-schemeid = 'GTB_FIILI_IHRACAT_TARIHI'.
-          WHEN OTHERS       . <ls_party_identification>-schemeid = ls_identifications-prtid  .
+          WHEN 'VKN'        .
+            <ls_party_identification>-schemeid = 'VKN'                     .
+          WHEN 'TCKN'       .
+            <ls_party_identification>-schemeid = 'TCKN'                    .
+          WHEN 'HIZMETNO'   .
+            <ls_party_identification>-schemeid = 'HIZMETNO'                .
+          WHEN 'MUSTERINO'  .
+            <ls_party_identification>-schemeid = 'MUSTERINO'               .
+          WHEN 'TESISATNO'  .
+            <ls_party_identification>-schemeid = 'TESISATNO'               .
+          WHEN 'TELEFONNO'  .
+            <ls_party_identification>-schemeid = 'TELEFONNO'               .
+          WHEN 'DISTNO'     .
+            <ls_party_identification>-schemeid = 'DISTRIBUTORNO'           .
+          WHEN 'TICSICNO'   .
+            <ls_party_identification>-schemeid = 'TICARETSICILNO'          .
+          WHEN 'TAPDKNO'    .
+            <ls_party_identification>-schemeid = 'TAPDKNO'                 .
+          WHEN 'BAYINO'     .
+            <ls_party_identification>-schemeid = 'BAYINO'                  .
+          WHEN 'ABONENO'    .
+            <ls_party_identification>-schemeid = 'ABONENO'                 .
+          WHEN 'SAYACNO'    .
+            <ls_party_identification>-schemeid = 'SAYACNO'                 .
+          WHEN 'EPDKNO'     .
+            <ls_party_identification>-schemeid = 'EPDKNO'                  .
+          WHEN 'SUBENO'     .
+            <ls_party_identification>-schemeid = 'SUBENO'                  .
+          WHEN 'PASAPORTNO' .
+            <ls_party_identification>-schemeid = 'PASAPORTNO'              .
+          WHEN 'URETICINO'  .
+            <ls_party_identification>-schemeid = 'URETICINO'               .
+          WHEN 'CIFTCINO'   .
+            <ls_party_identification>-schemeid = 'CIFTCINO'                .
+          WHEN 'IMALATCINO' .
+            <ls_party_identification>-schemeid = 'IMALATCINO'              .
+          WHEN 'DOSYANO'    .
+            <ls_party_identification>-schemeid = 'DOSYANO'                 .
+          WHEN 'HASTANO'    .
+            <ls_party_identification>-schemeid = 'HASTANO'                 .
+          WHEN 'MERSISNO'   .
+            <ls_party_identification>-schemeid = 'MERSISNO'                .
+          WHEN 'ARACI_VKN'  .
+            <ls_party_identification>-schemeid = 'ARACIKURUMVKN'           .
+          WHEN 'ARACI_ETK'  .
+            <ls_party_identification>-schemeid = 'ARACIKURUMETIKET'        .
+          WHEN 'GTB_REFNO'  .
+            <ls_party_identification>-schemeid = 'GTB_REFNO'               .
+          WHEN 'GCB_TESCIL' .
+            <ls_party_identification>-schemeid = 'GCB_TESCILNO'            .
+          WHEN 'GTB_IHRTAR' .
+            <ls_party_identification>-schemeid = 'GTB_FIILI_IHRACAT_TARIHI'.
+          WHEN OTHERS       .
+            <ls_party_identification>-schemeid = ls_identifications-prtid  .
         ENDCASE.
         <ls_party_identification>-content = ls_identifications-value.
       ENDLOOP.

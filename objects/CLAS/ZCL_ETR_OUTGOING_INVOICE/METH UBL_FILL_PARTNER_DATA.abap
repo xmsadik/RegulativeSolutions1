@@ -120,9 +120,14 @@
       INTO @rs_data-contact-electronicmail-content.
 
     IF iv_profile_id NE 'IHRACAT' AND
-       iv_profile_id NE 'YOLCU'.
+       iv_profile_id NE 'YOLCU' AND
+       iv_profile_id NE 'MUSTAHSIL'.
       rs_data-partytaxscheme-taxscheme-name-content = iv_tax_office.
       DATA(lv_taxid) = iv_tax_id.
+    ENDIF.
+
+    IF iv_profile_id EQ 'MUSTAHSIL'.
+      lv_taxid = iv_tax_id.
     ENDIF.
 
     IF strlen( lv_taxid ) = 11.
