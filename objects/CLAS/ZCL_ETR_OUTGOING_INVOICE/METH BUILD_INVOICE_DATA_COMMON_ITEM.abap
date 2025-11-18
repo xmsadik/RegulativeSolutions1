@@ -105,7 +105,7 @@
         ELSE.
           APPEND INITIAL LINE TO <ls_invoice_line>-allowancecharge ASSIGNING <ls_allowance_charge>.
           <ls_allowance_charge>-chargeindicator-content = 'false'.
-          <ls_allowance_charge>-allowancechargereason-content = ls_item_allowance-descr.
+          <ls_allowance_charge>-allowancechargereason-content = ls_invoice_items-distx.
           IF ls_invoice_items-distr IS NOT INITIAL.
             <ls_allowance_charge>-amount-content = ls_invoice_items-distr.
           ENDIF.
@@ -133,7 +133,7 @@
         ELSE.
           APPEND INITIAL LINE TO <ls_invoice_line>-allowancecharge ASSIGNING <ls_allowance_charge>.
           <ls_allowance_charge>-chargeindicator-content = 'true'.
-          <ls_allowance_charge>-allowancechargereason-content = ls_item_allowance-descr.
+          <ls_allowance_charge>-allowancechargereason-content = ls_invoice_items-surtx.
           IF ls_invoice_items-surtr IS NOT INITIAL.
             <ls_allowance_charge>-amount-content = ls_invoice_items-surtr.
           ENDIF.

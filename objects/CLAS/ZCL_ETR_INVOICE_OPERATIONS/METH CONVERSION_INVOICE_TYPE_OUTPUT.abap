@@ -8,6 +8,8 @@
         rv_output = 'ILAC_TIBBICIHAZ'.
       WHEN 'KONAKLAMA'.
         rv_output = 'KONAKLAMAVERGISI'.
+      WHEN 'MUSTAHSIL'.
+        rv_output = 'MUSTAHSILMAKBUZ'.
       WHEN OTHERS.
         rv_output = iv_input.
     ENDCASE.

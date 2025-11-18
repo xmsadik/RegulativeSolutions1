@@ -6,11 +6,13 @@
              awtyp TYPE zetr_e_awtyp,
            END OF ty_invoice.
     DATA(ls_selection) = is_selection.
-    DATA: lt_invoices    TYPE STANDARD TABLE OF ty_invoice,
-          lv_bukrs       TYPE bukrs,
-          ls_return      TYPE bapiret2,
-          ls_document    TYPE zetr_t_oginv,
-          lt_docui_range TYPE RANGE OF zetr_e_docui.
+    DATA: lt_invoices     TYPE STANDARD TABLE OF ty_invoice,
+          ls_invoice      TYPE ty_invoice,
+          ls_invoice_prev TYPE ty_invoice,
+          lv_bukrs        TYPE bukrs,
+          ls_return       TYPE bapiret2,
+          ls_document     TYPE zetr_t_oginv,
+          lt_docui_range  TYPE RANGE OF zetr_e_docui.
 
     IF ls_selection-bukrs IS INITIAL.
       SELECT 'I' AS sign,
@@ -289,12 +291,19 @@
       INTO TABLE @DATA(lt_refdoc_types).
 
     IF lt_invoices IS NOT INITIAL.
-      SORT lt_invoices BY bukrs belnr gjahr awtyp.
+      SORT lt_invoices STABLE BY bukrs belnr gjahr awtyp.
       DELETE ADJACENT DUPLICATES FROM lt_invoices COMPARING bukrs belnr gjahr awtyp.
-      LOOP AT lt_invoices INTO DATA(ls_invoice).
+      LOOP AT lt_invoices INTO ls_invoice.
         IF iv_max_count IS NOT INITIAL AND sy-tabix > iv_max_count.
           EXIT.
         ENDIF.
+        IF ls_invoice-awtyp = ls_invoice_prev-awtyp AND
+           ls_invoice-bukrs = ls_invoice_prev-bukrs AND
+           ls_invoice-belnr = ls_invoice_prev-belnr AND
+           ls_invoice-gjahr = ls_invoice_prev-gjahr.
+          CONTINUE.
+        ENDIF.
+        ls_invoice_prev = ls_invoice.
         SELECT COUNT( * )
           FROM zetr_t_oginv
           WHERE bukrs = @ls_invoice-bukrs

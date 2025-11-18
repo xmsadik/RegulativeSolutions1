@@ -6,18 +6,20 @@
              awtyp TYPE zetr_e_awtyp,
            END OF ty_delivery.
     DATA(ls_selection) = is_selection.
-    DATA: lt_deliveries  TYPE STANDARD TABLE OF ty_delivery,
-          lv_bukrs       TYPE bukrs,
-          ls_return      TYPE bapiret2,
-          ls_document    TYPE zetr_t_ogdlv,
-          lt_docui_range TYPE RANGE OF zetr_e_docui.
+    DATA: lt_deliveries    TYPE STANDARD TABLE OF ty_delivery,
+          ls_delivery_prev TYPE ty_delivery,
+          ls_delivery      TYPE ty_delivery,
+          lv_bukrs         TYPE bukrs,
+          ls_return        TYPE bapiret2,
+          ls_document      TYPE zetr_t_ogdlv,
+          lt_docui_range   TYPE RANGE OF zetr_e_docui.
 
     IF ls_selection-bukrs IS INITIAL.
       SELECT 'I' AS sign,
              'EQ' AS option,
              bukrs AS low,
              ' ' AS high
-        FROM zetr_t_cmpin
+        FROM zetr_t_edpar
         INTO TABLE @ls_selection-bukrs.
     ENDIF.
 
@@ -31,52 +33,29 @@
        ls_selection-erdat IS INITIAL.
       ls_selection-erdat = VALUE #( ( sign = 'I' option = 'EQ' low = cl_abap_context_info=>get_system_date( ) ) ).
 
-      IF 'VBRK' IN ls_selection-awtyp.
+      IF 'LIKP' IN ls_selection-awtyp.
         SELECT 'I' AS sign,
                'EQ' AS option,
                sddty AS low,
                ' ' AS high
-          FROM zetr_t_eirules
+          FROM zetr_t_edrules
           WHERE rulet = 'P'
-            AND awtyp = 'VBRK'
-            AND excld = ''
-
-          UNION DISTINCT
-
-          SELECT 'I' AS sign,
-               'EQ' AS option,
-               sddty AS low,
-               ' ' AS high
-          FROM zetr_t_earules
-          WHERE rulet = 'P'
-            AND awtyp = 'VBRK'
+            AND awtyp = 'LIKP'
             AND excld = ''
 
           INTO TABLE @ls_selection-sddty.
         DELETE ls_selection-sddty WHERE low IS INITIAL.
       ENDIF.
 
-      IF 'RMRP' IN ls_selection-awtyp.
+      IF 'MKPF' IN ls_selection-awtyp.
         SELECT 'I' AS sign,
                'EQ' AS option,
                mmdty AS low,
                ' ' AS high
-          FROM zetr_t_eirules
+          FROM zetr_t_edrules
           WHERE rulet = 'P'
-            AND awtyp = 'RMRP'
+            AND awtyp = 'MKPF'
             AND excld = ''
-
-          UNION DISTINCT
-
-          SELECT 'I' AS sign,
-               'EQ' AS option,
-               mmdty AS low,
-               ' ' AS high
-          FROM zetr_t_earules
-          WHERE rulet = 'P'
-            AND awtyp = 'RMRP'
-            AND excld = ''
-
           INTO TABLE @ls_selection-mmdty.
         DELETE ls_selection-mmdty WHERE low IS INITIAL.
       ENDIF.
@@ -86,18 +65,7 @@
                'EQ' AS option,
                fidty AS low,
                ' ' AS high
-          FROM zetr_t_eirules
-          WHERE rulet = 'P'
-            AND awtyp = 'BKPF'
-            AND excld = ''
-
-          UNION DISTINCT
-
-          SELECT 'I' AS sign,
-               'EQ' AS option,
-               fidty AS low,
-               ' ' AS high
-          FROM zetr_t_earules
+          FROM zetr_t_edrules
           WHERE rulet = 'P'
             AND awtyp = 'BKPF'
             AND excld = ''
@@ -292,12 +260,19 @@
       INTO TABLE @DATA(lt_refdoc_types).
 
     IF lt_deliveries IS NOT INITIAL.
-      SORT lt_deliveries BY bukrs belnr gjahr awtyp.
+      SORT lt_deliveries STABLE BY bukrs belnr gjahr awtyp.
       DELETE ADJACENT DUPLICATES FROM lt_deliveries COMPARING bukrs belnr gjahr awtyp.
-      LOOP AT lt_deliveries INTO DATA(ls_delivery).
+      LOOP AT lt_deliveries INTO ls_delivery.
         IF iv_max_count IS NOT INITIAL AND sy-tabix > iv_max_count.
           EXIT.
         ENDIF.
+        IF ls_delivery-bukrs = ls_delivery_prev-bukrs AND
+           ls_delivery-belnr = ls_delivery_prev-belnr AND
+           ls_delivery-gjahr = ls_delivery_prev-gjahr AND
+           ls_delivery-awtyp = ls_delivery_prev-awtyp.
+          CONTINUE.
+        ENDIF.
+        ls_delivery_prev = ls_delivery.
         SELECT COUNT( * )
           FROM zetr_t_ogdlv
           WHERE bukrs = @ls_delivery-bukrs

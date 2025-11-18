@@ -57,9 +57,21 @@
           ls_konv-kwert = abs( ls_konv-kwert ).
           ls_items-distr += ls_konv-kwert.
           ls_item_allowance-distr = ls_konv-kwert.
+          ls_item_allowance-distx = ls_condition-descr.
+          IF ms_document-itmcl IS INITIAL AND ls_items-distx IS INITIAL AND ls_condition-descr IS NOT INITIAL.
+            ls_items-distx = ls_condition-descr.
+          ELSEIF ls_items-distx IS NOT INITIAL AND ls_condition-descr <> ls_items-distx.
+            CLEAR ls_items-distx.
+          ENDIF.
         ELSEIF ls_konv-kwert GT 0.
           ls_items-surtr += ls_konv-kwert.
           ls_item_allowance-surtr = ls_konv-kwert.
+          ls_item_allowance-surtx = ls_condition-descr.
+          IF ms_document-itmcl IS INITIAL AND ls_items-surtx IS INITIAL AND ls_condition-descr IS NOT INITIAL.
+            ls_items-surtx = ls_condition-descr.
+          ELSEIF ls_items-surtx IS NOT INITIAL AND ls_condition-descr <> ls_items-surtx.
+            CLEAR ls_items-surtx.
+          ENDIF.
         ENDIF.
         IF ls_konv-kbetr LT 0 .
           lv_kbetr =  abs( ls_konv-kbetr ) / 100.

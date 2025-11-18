@@ -305,8 +305,10 @@ CLASS zcl_etr_outgoing_invoice DEFINITION
     TYPES netwa TYPE waers.
     TYPES disrt TYPE c LENGTH 20.
     TYPES distr TYPE wrbtr_cs.
+    TYPES distx TYPE zetr_e_descr.
     TYPES surrt TYPE c LENGTH 20.
     TYPES surtr TYPE wrbtr_cs.
+    TYPES surtx TYPE zetr_e_descr.
     TYPES mwskz TYPE mwskz.
     TYPES mwsbp TYPE wrbtr_cs.
     TYPES othtx TYPE wrbtr_cs.
@@ -332,8 +334,10 @@ CLASS zcl_etr_outgoing_invoice DEFINITION
     TYPES posnr TYPE n LENGTH 6.
     TYPES disrt TYPE c LENGTH 20.
     TYPES distr TYPE wrbtr_cs.
+    TYPES distx TYPE zetr_e_descr.
     TYPES surrt TYPE c LENGTH 20.
     TYPES surtr TYPE wrbtr_cs.
+    TYPES surtx TYPE zetr_e_descr.
     TYPES descr TYPE zetr_e_descr.
     TYPES END OF mty_item_allowance .
     TYPES mty_item_allowance_t TYPE TABLE OF mty_item_allowance .
