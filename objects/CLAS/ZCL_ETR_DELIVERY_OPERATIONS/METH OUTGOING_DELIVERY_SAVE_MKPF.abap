@@ -156,7 +156,7 @@
     CLEAR ls_edrule_output.
     ls_edrule_output = get_edelivery_rule( iv_rule_type   = 'P'
                                            is_rule_input  = ls_edrule_input ).
-    IF ls_edrule_output IS INITIAL AND ls_edrule_output-excld IS NOT INITIAL.
+    IF ls_edrule_output IS INITIAL OR ls_edrule_output-excld IS NOT INITIAL.
       es_return-type = 'E'.
       es_return-id = 'ZETR_COMMON'.
       es_return-number = '243'.
