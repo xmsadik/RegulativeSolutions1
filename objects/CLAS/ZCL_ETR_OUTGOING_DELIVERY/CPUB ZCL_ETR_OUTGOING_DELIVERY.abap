@@ -287,7 +287,7 @@ CLASS zcl_etr_outgoing_delivery DEFINITION
 
     METHODS generate_delivery_id
       IMPORTING
-        iv_save_db               TYPE abap_boolean DEFAULT abap_true
+        iv_save_db                TYPE abap_boolean DEFAULT abap_true
       RETURNING
         VALUE(rv_delivery_number) TYPE zetr_e_docno
       RAISING

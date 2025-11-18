@@ -118,11 +118,13 @@
       rs_data-person-firstname-content = ls_address-PersonGivenName .
       rs_data-person-familyname-content = ls_address-PersonFamilyName.
       IF rs_data-person-familyname-content IS INITIAL AND ls_address-PersonGivenName IS NOT INITIAL.
+        CONDENSE ls_address-PersonGivenName.
         SPLIT ls_address-PersonGivenName
           AT space
           INTO rs_data-person-firstname-content
                rs_data-person-familyname-content.
       ELSEIF rs_data-person-familyname-content IS INITIAL AND ls_address-OrganizationName1 IS NOT INITIAL.
+        CONDENSE ls_address-OrganizationName1.
         SPLIT ls_address-OrganizationName1
           AT space
           INTO rs_data-person-firstname-content
