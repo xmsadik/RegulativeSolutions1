@@ -45,11 +45,11 @@
     ENDLOOP.
 
     LOOP AT lt_taxtotal INTO ls_taxtotal.
+      ms_invoice_ubl-legalmonetarytotal-taxinclusiveamount-content = ms_invoice_ubl-legalmonetarytotal-taxinclusiveamount-content + ls_taxtotal-taxamount.
       IF ls_taxtotal-witholding IS NOT INITIAL.
         APPEND INITIAL LINE TO ms_invoice_ubl-withholdingtaxtotal ASSIGNING FIELD-SYMBOL(<ls_taxtotal>).
       ELSE.
         APPEND INITIAL LINE TO ms_invoice_ubl-taxtotal ASSIGNING <ls_taxtotal>.
-        ms_invoice_ubl-legalmonetarytotal-taxinclusiveamount-content = ms_invoice_ubl-legalmonetarytotal-taxinclusiveamount-content + ls_taxtotal-taxamount.
       ENDIF.
       <ls_taxtotal>-taxamount-content = ls_taxtotal-taxtotal.
       <ls_taxtotal>-taxamount-currencyid = ms_invoice_ubl-documentcurrencycode-content.

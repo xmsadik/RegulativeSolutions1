@@ -265,6 +265,9 @@
     LOOP AT ms_invoice_ubl-taxtotal ASSIGNING <ls_tax_total>.
       ms_invoice_ubl-legalmonetarytotal-taxinclusiveamount-content = ms_invoice_ubl-legalmonetarytotal-taxinclusiveamount-content + <ls_tax_total>-taxamount-content.
     ENDLOOP.
+    LOOP AT ms_invoice_ubl-withholdingtaxtotal ASSIGNING <ls_tax_total>.
+      ms_invoice_ubl-legalmonetarytotal-taxinclusiveamount-content = ms_invoice_ubl-legalmonetarytotal-taxinclusiveamount-content + <ls_tax_total>-taxamount-content.
+    ENDLOOP.
 **********************************************************************
 
     IF ms_invoice_ubl-legalmonetarytotal-allowancetotalamount-content IS NOT INITIAL.
