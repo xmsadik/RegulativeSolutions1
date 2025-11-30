@@ -32,9 +32,6 @@
     LOOP AT ms_invoice_ubl-taxtotal INTO DATA(ls_tax_total).
       ms_invoice_ubl-legalmonetarytotal-taxinclusiveamount-content += ls_tax_total-taxamount-content.
     ENDLOOP.
-    LOOP AT ms_invoice_ubl-withholdingtaxtotal INTO ls_tax_total.
-      ms_invoice_ubl-legalmonetarytotal-taxinclusiveamount-content += ls_tax_total-taxamount-content.
-    ENDLOOP.
     IF ms_invoice_ubl-legalmonetarytotal-chargetotalamount-content IS NOT INITIAL.
       ms_invoice_ubl-legalmonetarytotal-chargetotalamount-currencyid = ms_accdoc_data-bkpf-waers.
     ENDIF.
