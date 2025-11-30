@@ -218,6 +218,8 @@
         FROM @ms_accdoc_data-bseg AS bseg
         LEFT OUTER JOIN zetr_t_fiacc AS fiac
           ON bseg~hkont = fiac~saknr
+        WHERE bseg~koart <> 'D'
+          AND bseg~koart <> 'K'
         GROUP BY bseg~mwskz
         INTO TABLE @ms_accdoc_data-bset.
     ENDIF.
