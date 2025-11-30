@@ -37,7 +37,7 @@
       IF ms_invoice_ubl-taxtotal IS INITIAL.
         APPEND INITIAL LINE TO ms_invoice_ubl-taxtotal ASSIGNING FIELD-SYMBOL(<ls_tax_total>).
       ELSE.
-        READ TABLE ms_invoice_ubl-taxtotal INTO <ls_tax_total> INDEX 1.
+        READ TABLE ms_invoice_ubl-taxtotal ASSIGNING <ls_tax_total> INDEX 1.
       ENDIF.
       <ls_tax_total>-taxamount-currencyid = ms_accdoc_data-bkpf-waers.
       <ls_tax_total>-taxamount-content += COND #( WHEN ls_bset-fwste IS NOT INITIAL THEN ls_bset-fwste ELSE ls_bset-hwste ).
@@ -81,7 +81,7 @@
         IF ms_invoice_ubl-withholdingtaxtotal IS INITIAL.
           APPEND INITIAL LINE TO ms_invoice_ubl-withholdingtaxtotal ASSIGNING <ls_tax_total>.
         ELSE.
-          READ TABLE ms_invoice_ubl-withholdingtaxtotal INTO <ls_tax_total> INDEX 1.
+          READ TABLE ms_invoice_ubl-withholdingtaxtotal ASSIGNING <ls_tax_total> INDEX 1.
         ENDIF.
         <ls_tax_total>-taxamount-currencyid = ms_accdoc_data-bkpf-waers.
         <ls_tax_total>-taxamount-content += COND #( WHEN ls_bset-fwhol IS NOT INITIAL THEN ls_bset-fwhol ELSE ls_bset-hwhol ).
