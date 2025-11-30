@@ -28,6 +28,7 @@
     ENDIF.
 
     build_invoice_data_bkpf_tax( ).
+    fill_common_tax_totals( ).
 
     LOOP AT ms_invoice_ubl-taxtotal INTO DATA(ls_tax_total).
       ms_invoice_ubl-legalmonetarytotal-taxinclusiveamount-content += ls_tax_total-taxamount-content.

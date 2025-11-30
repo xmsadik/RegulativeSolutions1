@@ -198,7 +198,7 @@
         ENDIF.
         <ls_taxsubtotal>-taxamount-currencyid = ls_invoice_items-waers.
       ELSE.
-        lv_amount = ( ( ls_invoice_items-netwr * ls_tax_match-txrtp ) / 100 ) * ( 1 - ls_tax_match-taxrt / 100 ).
+        lv_amount = ( ( ls_invoice_items-netwr * ls_tax_match-txrtp ) / 100 ) ."* ( 1 - ls_tax_match-taxrt / 100 ).
         <ls_invoice_line>-taxtotal-taxamount-content = lv_amount.
         APPEND INITIAL LINE TO <ls_invoice_line>-taxtotal-taxsubtotal ASSIGNING <ls_taxsubtotal>.
         SELECT SINGLE *
@@ -223,7 +223,7 @@
             <ls_taxtotal>-taxamount-currencyid = ls_invoice_items-waers.
             APPEND INITIAL LINE TO <ls_taxtotal>-taxsubtotal ASSIGNING <ls_taxsubtotal>.
           ELSE.
-            APPEND INITIAL LINE TO <ls_invoice_line>-withholdingtaxtotal ASSIGNING <ls_taxtotal>.
+*            APPEND INITIAL LINE TO <ls_invoice_line>-withholdingtaxtotal ASSIGNING <ls_taxtotal>.
             APPEND INITIAL LINE TO <ls_taxtotal>-taxsubtotal ASSIGNING <ls_taxsubtotal>.
           ENDIF.
           IF ms_document-taxty IS NOT INITIAL.

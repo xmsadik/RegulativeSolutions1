@@ -14,6 +14,7 @@
     DATA mt_invoice_items TYPE mty_item_collect_t.
     DATA ms_accdoc_data TYPE mty_accdoc_data.
     DATA mt_items_allowance TYPE mty_item_allowance_t .
+    DATA mt_tax_total TYPE STANDARD TABLE OF mty_taxtotal WITH EMPTY KEY.
     DATA ms_invrec_data TYPE mty_invrec_data .
     DATA ms_billing_data TYPE mty_billing_data .
     DATA mv_profile_id TYPE zetr_e_inprf.

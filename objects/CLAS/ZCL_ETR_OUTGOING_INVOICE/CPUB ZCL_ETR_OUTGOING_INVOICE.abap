@@ -353,6 +353,18 @@ CLASS zcl_etr_outgoing_invoice DEFINITION
     TYPES END OF mty_item_allowance .
     TYPES mty_item_allowance_t TYPE TABLE OF mty_item_allowance .
 
+    TYPES BEGIN OF mty_taxtotal.
+    TYPES tax_code   TYPE string.
+    TYPES tax_name   TYPE string.
+    TYPES tax_rate   TYPE string.
+    TYPES exp_code   TYPE string.
+    TYPES exp_name   TYPE string.
+    TYPES taxtotal  TYPE wrbtr_cs.
+    TYPES taxamount  TYPE wrbtr_cs.
+    TYPES tax_base   TYPE wrbtr_cs.
+    TYPES witholding TYPE abap_boolean.
+    TYPES END OF mty_taxtotal .
+
     TYPES BEGIN OF mty_custom_parameters.
     TYPES cuspa TYPE zetr_e_cuspa.
     TYPES value TYPE zetr_e_value.

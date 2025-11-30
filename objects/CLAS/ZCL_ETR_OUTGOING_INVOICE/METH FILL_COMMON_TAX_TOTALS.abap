@@ -83,6 +83,7 @@
           READ TABLE lt_taxtotal INTO ls_taxtotal
             WITH KEY tax_code = ls_existing_subtotal-taxcategory-taxscheme-taxtypecode-content
                      exp_code = ls_existing_subtotal-taxcategory-taxexemptionreasoncode-content
+                     tax_rate = ls_existing_subtotal-percent-content
                      witholding = ''.
           CHECK sy-subrc = 0.
           DATA(lv_diff_amount) = CONV wrbtr_cs( ls_existing_subtotal-taxamount-content - ls_taxtotal-taxamount ).
@@ -90,7 +91,8 @@
           LOOP AT ms_invoice_ubl-invoiceline ASSIGNING FIELD-SYMBOL(<ls_invoiceline>).
             LOOP AT <ls_invoiceline>-taxtotal-taxsubtotal ASSIGNING <ls_taxsubtotal>
               WHERE taxcategory-taxscheme-taxtypecode-content = ls_existing_subtotal-taxcategory-taxscheme-taxtypecode-content
-                AND taxcategory-taxexemptionreasoncode-content = ls_existing_subtotal-taxcategory-taxexemptionreasoncode-content.
+                AND taxcategory-taxexemptionreasoncode-content = ls_existing_subtotal-taxcategory-taxexemptionreasoncode-content
+                AND percent-content = ls_existing_subtotal-percent-content.
               IF lv_diff_amount < 0.
                 CHECK CONV wrbtr_cs( <ls_taxsubtotal>-taxamount-content ) > abs( lv_diff_amount ).
               ENDIF.
