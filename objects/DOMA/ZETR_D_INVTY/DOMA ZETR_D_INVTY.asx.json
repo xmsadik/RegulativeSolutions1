@@ -170,6 +170,15 @@
     "DOMVALUE_L":"SARJANLIK",
     "DOMVALUE_H":"",
     "APPVAL":""
+   },
+   {
+    "DOMNAME":"ZETR_D_INVTY",
+    "AS4LOCAL":"N",
+    "VALPOS":14,
+    "AS4VERS":0,
+    "DOMVALUE_L":"MUSTAHSIL",
+    "DOMVALUE_H":"",
+    "APPVAL":""
    }
   ]
  },
@@ -319,6 +328,17 @@
     "DOMVAL_LD":"",
     "DOMVAL_HD":"",
     "DOMVALUE_L":"SARJANLIK"
+   },
+   {
+    "DOMNAME":"ZETR_D_INVTY",
+    "DDLANGUAGE":"E",
+    "AS4LOCAL":"N",
+    "VALPOS":14,
+    "AS4VERS":0,
+    "DDTEXT":"Producer",
+    "DOMVAL_LD":"",
+    "DOMVAL_HD":"",
+    "DOMVALUE_L":"MUSTAHSIL"
    },
    {
     "DOMNAME":"ZETR_D_INVTY",

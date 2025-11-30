@@ -59,11 +59,15 @@ CLASS zcl_etr_einvoice_ws DEFINITION
 
     METHODS download_registered_taxpayers2
       ABSTRACT
+      RETURNING
+        VALUE(rt_list) TYPE mty_taxpayers_list
       RAISING
         zcx_etr_regulative_exception .
 
     METHODS download_registered_taxpayers3
       ABSTRACT
+      RETURNING
+        VALUE(rt_list) TYPE mty_taxpayers_list
       RAISING
         zcx_etr_regulative_exception .
 

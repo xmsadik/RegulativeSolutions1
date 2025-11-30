@@ -36,6 +36,12 @@
         AND FiscalYear = @ms_document-gjahr
       INTO TABLE @ms_invrec_data-glaccountdata.
 
+    SELECT *
+      FROM i_supplierinvoicetaxapi01
+      WHERE SupplierInvoice = @ms_document-belnr
+        AND FiscalYear = @ms_document-gjahr
+      INTO TABLE @ms_invrec_data-taxdata.
+
     SELECT SINGLE company~companycode AS bukrs,
                   company~currency AS waers,
                   company~country AS land1,

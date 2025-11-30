@@ -1,18 +1,18 @@
   METHOD collect_items_bkpf.
-    DATA: lt_hkont TYPE RANGE OF hkont,
-          ls_hkont LIKE LINE OF lt_hkont,
+    DATA: "lt_hkont TYPE RANGE OF hkont,
+          "ls_hkont LIKE LINE OF lt_hkont,
           ls_items TYPE mty_item_collect.
 
-    LOOP AT ms_accdoc_data-accounts INTO DATA(ls_accounts).
-      ls_hkont-sign = 'I'.
-      ls_hkont-option = 'EQ'.
-      ls_hkont-low = ls_accounts-saknr.
-      APPEND ls_hkont TO lt_hkont.
-    ENDLOOP.
+*    LOOP AT ms_accdoc_data-accounts INTO DATA(ls_accounts).
+*      ls_hkont-sign = 'I'.
+*      ls_hkont-option = 'EQ'.
+*      ls_hkont-low = ls_accounts-saknr.
+*      APPEND ls_hkont TO lt_hkont.
+*    ENDLOOP.
 
     LOOP AT ms_accdoc_data-bseg INTO DATA(ls_bseg_lines)  WHERE ( koart = 'S' OR
                                                                   koart = 'A' )
-                                                            AND shkzg = 'H' .
+                                                            AND shkzg = 'H'.
       ls_bseg_lines-wrbtr = abs( ls_bseg_lines-wrbtr ).
       ls_bseg_lines-dmbtr = abs( ls_bseg_lines-dmbtr ).
       ls_bseg_lines-menge = abs( ls_bseg_lines-menge ).
@@ -20,15 +20,15 @@
       IF ls_bseg_lines-lokkt IS NOT INITIAL.
         ls_bseg_lines-hkont = ls_bseg_lines-lokkt.
       ENDIF.
-      CHECK ls_bseg_lines-hkont NOT IN lt_hkont.
+*      CHECK ls_bseg_lines-hkont NOT IN lt_hkont.
       IF ls_bseg_lines-wrbtr IS INITIAL AND ls_bseg_lines-dmbtr IS NOT INITIAL.
         ls_bseg_lines-wrbtr = ls_bseg_lines-dmbtr.
       ENDIF.
 
-      READ TABLE ms_accdoc_data-accounts
-        WITH TABLE KEY saknr = ls_bseg_lines-hkont
-        TRANSPORTING NO FIELDS.
-      CHECK sy-subrc IS NOT INITIAL.
+*      READ TABLE ms_accdoc_data-accounts
+*        WITH TABLE KEY saknr = ls_bseg_lines-hkont
+*        TRANSPORTING NO FIELDS.
+*      CHECK sy-subrc IS NOT INITIAL.
 
       CLEAR ls_items.
       ls_items-posnr = ls_bseg_lines-buzei.

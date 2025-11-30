@@ -75,7 +75,9 @@
            item~financialaccounttype AS koart,
            item~debitcreditcode AS shkzg,
            item~glaccount AS hkont,
-           GLAccountLongName AS txt50,
+           CASE WHEN item~AlternativeGLAccount IS INITIAL
+                     THEN glaccounttext~GLAccountLongName
+                ELSE altglaccounttext~GLAccountLongName END AS txt50,
            abs( amountincompanycodecurrency ) AS dmbtr,
            abs( amountintransactioncurrency ) AS wrbtr,
            NetDueDate AS netdt,
@@ -86,12 +88,28 @@
            DocumentItemText AS sgtxt,
            TaxCode AS meskz,
            Quantity AS menge,
-           BaseUnit AS meins
+           BaseUnit AS meins,
+           CASE WHEN item~AlternativeGLAccount IS INITIAL
+                     THEN fiacc~accty
+                ELSE altfiacc~accty END AS accty,
+           CASE WHEN item~AlternativeGLAccount IS INITIAL
+                     THEN fiacc~taxty
+                ELSE altfiacc~taxty END AS taxty
       FROM i_journalentryitem AS item
         LEFT OUTER JOIN i_glaccounttext AS glaccounttext
           ON  glaccounttext~Language = @sy-langu
           AND glaccounttext~ChartOfAccounts = @ms_accdoc_data-t001-ktopl
           AND glaccounttext~GLAccount = item~GLAccount
+        LEFT OUTER JOIN i_glaccounttext AS altglaccounttext
+          ON  altglaccounttext~Language = @sy-langu
+          AND altglaccounttext~ChartOfAccounts = @ms_accdoc_data-t001-ktopl
+          AND altglaccounttext~GLAccount = item~AlternativeGLAccount
+        LEFT OUTER JOIN zetr_t_fiacc AS fiacc
+          ON  fiacc~ktopl = @ms_accdoc_data-t001-ktopl
+          AND fiacc~saknr = item~GLAccount
+        LEFT OUTER JOIN zetr_t_fiacc AS altfiacc
+          ON  altfiacc~ktopl = @ms_accdoc_data-t001-ktopl
+          AND altfiacc~saknr = item~AlternativeGLAccount
        WHERE item~companycode = @ms_document-bukrs
          AND item~accountingdocument = @ms_document-belnr
          AND item~fiscalyear = @ms_document-gjahr
@@ -162,6 +180,46 @@
         FROM zetr_t_fiacc
         WHERE ktopl = @ms_accdoc_data-t001-ktopl
         INTO TABLE @ms_accdoc_data-accounts.
+
+      SELECT
+        bseg~mwskz,
+        SUM( CASE WHEN bseg~koart = 'S'
+                   AND bseg~shkzg = 'H'
+                   AND fiac~accty = 'O'
+                  THEN bseg~wrbtr
+                  ELSE 0 END ) AS fwste,
+        SUM( CASE WHEN bseg~koart = 'S'
+                   AND bseg~shkzg = 'H'
+                   AND fiac~accty = 'O'
+                  THEN bseg~dmbtr
+                  ELSE 0 END ) AS hwste,
+        SUM( CASE WHEN bseg~koart <> 'D'
+                   AND bseg~koart <> 'K'
+                   AND bseg~shkzg = 'H'
+                   AND fiac~accty IS NULL
+                  THEN bseg~wrbtr
+                  ELSE 0 END ) AS fwbas,
+        SUM( CASE WHEN bseg~koart <> 'D'
+                   AND bseg~koart <> 'K'
+                   AND bseg~shkzg = 'H'
+                   AND fiac~accty IS NULL
+                  THEN bseg~dmbtr
+                  ELSE 0 END ) AS hwbas,
+        SUM( CASE WHEN bseg~koart = 'S'
+                   AND bseg~shkzg = 'S'
+                   AND fiac~accty = 'W'
+                  THEN bseg~wrbtr
+                  ELSE 0 END ) AS fwhol,
+        SUM( CASE WHEN bseg~koart = 'S'
+                   AND bseg~shkzg = 'S'
+                   AND fiac~accty = 'W'
+                  THEN bseg~dmbtr
+                  ELSE 0 END ) AS hwhol
+        FROM @ms_accdoc_data-bseg AS bseg
+        LEFT OUTER JOIN zetr_t_fiacc AS fiac
+          ON bseg~hkont = fiac~saknr
+        GROUP BY bseg~mwskz
+        INTO TABLE @ms_accdoc_data-bset.
     ENDIF.
 
     IF ( ms_document-invty = 'IADE' OR ms_document-invty = 'TEVIADE' ) AND

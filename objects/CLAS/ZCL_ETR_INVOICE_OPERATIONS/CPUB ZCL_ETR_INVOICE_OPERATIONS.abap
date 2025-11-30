@@ -153,7 +153,9 @@ CLASS zcl_etr_invoice_operations DEFINITION
 
     METHODS update_einvoice_users3
       IMPORTING
-        iv_db_write TYPE abap_boolean DEFAULT abap_true
+        iv_db_write    TYPE abap_boolean DEFAULT abap_true
+      RETURNING
+        VALUE(rt_list) TYPE zcl_etr_einvoice_ws=>mty_taxpayers_list
       RAISING
         zcx_etr_regulative_exception.
 

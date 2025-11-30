@@ -1,18 +1,4 @@
   METHOD build_invoice_data_vbrk_totals.
-*    TYPES BEGIN OF ty_tax_total.
-*    TYPES tax_code   TYPE string.
-*    TYPES tax_name   TYPE string.
-*    TYPES tax_rate   TYPE string.
-*    TYPES exp_code   TYPE string.
-*    TYPES exp_name   TYPE string.
-*    TYPES tax_total  TYPE wrbtr_cs.
-*    TYPES tax_amount TYPE wrbtr_cs.
-*    TYPES tax_base   TYPE wrbtr_cs.
-*    TYPES witholding TYPE abap_boolean.
-*    TYPES END OF ty_tax_total .
-*    DATA: lt_tax_total TYPE TABLE OF ty_tax_total,
-*          ls_tax_total TYPE ty_tax_total.
-
     LOOP AT ms_invoice_ubl-invoiceline INTO DATA(ls_invoice_line).
       ms_invoice_ubl-legalmonetarytotal-lineextensionamount-content += ls_invoice_line-lineextensionamount-content.
       LOOP AT ls_invoice_line-allowancecharge INTO DATA(ls_allowance_charge).
@@ -26,7 +12,7 @@
       ENDLOOP.
     ENDLOOP.
 
-    fill_common_tax_totals( ).
+    build_invoice_data_vbrk_tax( ).
 
     ms_invoice_ubl-legalmonetarytotal-lineextensionamount-currencyid = ms_billing_data-vbrk-waerk.
     ms_invoice_ubl-legalmonetarytotal-taxexclusiveamount-content = ms_billing_data-vbrk-netwr.

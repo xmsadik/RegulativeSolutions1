@@ -4,7 +4,7 @@
       ms_invoice_ubl-legalmonetarytotal-lineextensionamount-content += ls_invoice_line-lineextensionamount-content.
     ENDLOOP.
 
-    fill_common_tax_totals( ).
+    build_invoice_data_rmrp_tax( ).
 
     ms_invoice_ubl-legalmonetarytotal-lineextensionamount-currencyid = ms_invrec_data-headerdata-currency.
     ms_invoice_ubl-legalmonetarytotal-taxexclusiveamount-content = ms_invoice_ubl-legalmonetarytotal-lineextensionamount-content.

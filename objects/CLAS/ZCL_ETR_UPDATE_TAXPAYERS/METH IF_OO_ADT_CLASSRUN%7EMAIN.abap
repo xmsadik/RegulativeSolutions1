@@ -4,9 +4,12 @@
           lv_company         TYPE bukrs VALUE '1000'.
 
     TRY.
+        GET TIME STAMP FIELD DATA(lv_start).
         IF lv_update_invoice = abap_true.
           DATA(lo_invoice_instance) = zcl_etr_invoice_operations=>factory( iv_company = lv_company ).
-          lo_invoice_instance->update_einvoice_users3( ).
+          DATA(lt_inv_list) = lo_invoice_instance->update_einvoice_users3( ).
+          GET TIME STAMP FIELD DATA(lv_end).
+          out->write( |Updated { lines( lt_inv_list ) } e-invoice taxpayers in { lv_end - lv_start } seconds.| ).
         ENDIF.
 
         IF lv_update_delivery = abap_true.

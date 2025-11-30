@@ -14,7 +14,7 @@
                                                                                        subobject = 'INVOICE_USERS_JOB' ) ).
         TRY.
             DATA(lo_invoice_operations) = zcl_etr_invoice_operations=>factory( iv_company = CONV #( ls_parameter-low ) ).
-            lo_invoice_operations->update_einvoice_users4( iv_db_write = abap_true ).
+            lo_invoice_operations->update_einvoice_users3( iv_db_write = abap_true ).
             DATA(lo_message) = cl_bali_message_setter=>create( severity = if_bali_constants=>c_severity_status
                                                                id = 'ZETR_COMMON'
                                                                number = '082'

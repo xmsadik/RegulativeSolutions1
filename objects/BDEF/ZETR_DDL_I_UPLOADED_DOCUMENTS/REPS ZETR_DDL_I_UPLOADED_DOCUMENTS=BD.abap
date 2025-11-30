@@ -12,6 +12,8 @@ etag master ChangedAt
     {
       DocumentId      = document_id;
       DocumentType    = document_type;
+      RefDocNumber    = refdoc_number;
+      RefDocYear      = refdoc_year;
       Filename        = file_name;
       MimeType        = mime_type;
       DocumentContent = document_content;

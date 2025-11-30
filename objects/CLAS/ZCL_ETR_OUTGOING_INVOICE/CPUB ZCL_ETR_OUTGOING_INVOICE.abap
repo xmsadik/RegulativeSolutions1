@@ -64,6 +64,8 @@ CLASS zcl_etr_outgoing_invoice DEFINITION
     TYPES mwskz TYPE mwskz.
     TYPES menge TYPE menge_d.
     TYPES meins TYPE meins.
+    TYPES accty TYPE zetr_e_accty.
+    TYPES taxty TYPE zetr_e_taxty.
     TYPES zterm TYPE dzterm.
     TYPES zterm_text TYPE zetr_e_descr100.
     TYPES END OF mty_bseg.
@@ -81,6 +83,16 @@ CLASS zcl_etr_outgoing_invoice DEFINITION
     TYPES stcd2 TYPE zetr_e_taxid.
     TYPES END OF mty_bsec.
 
+    TYPES BEGIN OF mty_bset.
+    TYPES mwskz TYPE mwskz.
+    TYPES fwste TYPE wrbtr_cs.
+    TYPES hwste TYPE wrbtr_cs.
+    TYPES fwbas TYPE wrbtr_cs.
+    TYPES hwbas TYPE wrbtr_cs.
+    TYPES fwhol TYPE wrbtr_cs.
+    TYPES hwhol TYPE wrbtr_cs.
+    TYPES END OF mty_bset.
+
     TYPES BEGIN OF mty_accdoc_data.
     TYPES t001 TYPE mty_t001.
     TYPES t005 TYPE SORTED TABLE OF mty_t005 WITH UNIQUE KEY land1.
@@ -90,7 +102,7 @@ CLASS zcl_etr_outgoing_invoice DEFINITION
     TYPES bseg TYPE STANDARD TABLE OF mty_bseg WITH DEFAULT KEY
                                              WITH NON-UNIQUE SORTED KEY by_koart COMPONENTS koart shkzg
                                              WITH NON-UNIQUE SORTED KEY by_hkont COMPONENTS hkont shkzg.
-
+    TYPES bset TYPE STANDARD TABLE OF mty_bset WITH EMPTY KEY.
     TYPES bseg_partner TYPE mty_bseg.
     TYPES address_number TYPE c LENGTH 10.
     TYPES taxid TYPE zetr_e_taxid.
@@ -174,6 +186,7 @@ CLASS zcl_etr_outgoing_invoice DEFINITION
     TYPES headerdata TYPE mty_invrec_headerdata.
     TYPES itemdata TYPE TABLE OF mty_invrec_itemdata WITH DEFAULT KEY.
     TYPES glaccountdata TYPE TABLE OF mty_invrec_glaccountdata WITH DEFAULT KEY.
+    TYPES taxdata TYPE STANDARD TABLE OF i_supplierinvoicetaxapi01 WITH DEFAULT KEY.
     TYPES materialdata TYPE TABLE OF mty_invrec_materialdata WITH DEFAULT KEY.
     TYPES address_number TYPE c LENGTH 10.
     TYPES taxid TYPE zetr_e_taxid.

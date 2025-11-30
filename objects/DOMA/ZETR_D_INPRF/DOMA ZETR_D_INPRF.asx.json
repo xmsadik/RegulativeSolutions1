@@ -143,6 +143,15 @@
     "DOMVALUE_L":"ENERJI",
     "DOMVALUE_H":"",
     "APPVAL":""
+   },
+   {
+    "DOMNAME":"ZETR_D_INPRF",
+    "AS4LOCAL":"N",
+    "VALPOS":11,
+    "AS4VERS":0,
+    "DOMVALUE_L":"MUSTAHSIL",
+    "DOMVALUE_H":"",
+    "APPVAL":""
    }
   ]
  },
@@ -259,6 +268,17 @@
     "DOMVAL_LD":"",
     "DOMVAL_HD":"",
     "DOMVALUE_L":"ENERJI"
+   },
+   {
+    "DOMNAME":"ZETR_D_INPRF",
+    "DDLANGUAGE":"E",
+    "AS4LOCAL":"N",
+    "VALPOS":11,
+    "AS4VERS":0,
+    "DDTEXT":"Producer Invoice",
+    "DOMVAL_LD":"",
+    "DOMVAL_HD":"",
+    "DOMVALUE_L":"MUSTAHSIL"
    },
    {
     "DOMNAME":"ZETR_D_INPRF",

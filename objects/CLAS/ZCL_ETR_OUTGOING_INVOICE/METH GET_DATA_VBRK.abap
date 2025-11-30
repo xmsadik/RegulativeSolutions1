@@ -90,46 +90,46 @@
            likp~shippingtype AS vgvsa,
            likp~ReferenceDocumentNumber AS vgxbl,
            likp~DeliveryDocumentBySupplier AS vglfx,
-           CASE WHEN likp~ActualGoodsMovementDate IS NOT INITIAL THEN likp~ActualGoodsMovementDate ELSE likp~PlannedGoodsIssueDate END AS vgdat,
-           vbrp~SalesDocument AS aubel,
-           vbrp~SalesDocumentItem AS aupos,
-           vbak~salesdocumentdate AS audat,
-           vbap~MaterialByCustomer AS aumat,
-           vbap~PurchaseOrderByCustomer AS aubst,
-           vbap~ShippingType AS auvsa,
-           CASE WHEN vbpa~customer <> ' ' THEN vbpa~customer ELSE @ms_billing_data-vbrk-kunre END AS kunwe,
-           CASE WHEN vbpa~addressid <> ' ' THEN vbpa~addressid ELSE @ms_billing_data-vbrk-adrre END AS adrwe,
-           vbrp~netamount AS netwr,
-           vbrp~Subtotal1Amount AS kzwi1,
-           vbrp~Subtotal2Amount AS kzwi2,
-           vbrp~Subtotal3Amount AS kzwi3,
-           vbrp~Subtotal4Amount AS kzwi4,
-           vbrp~Subtotal5Amount AS kzwi5,
-           vbrp~Subtotal6Amount AS kzwi6,
-           vbrp~MaterialPricingGroup AS kondm,
-           vbrp~ItemGrossWeight AS brgew,
-           vbrp~ItemNetWeight AS ntgew,
-           vbrp~ItemWeightUnit AS gewei
-      FROM i_billingdocumentitem AS vbrp
-      LEFT OUTER JOIN I_ProductPlantBasic AS marc
-        ON  marc~product = vbrp~product
-        AND marc~plant = vbrp~plant
-      LEFT OUTER JOIN I_CountryText AS t005t
-        ON  t005t~Language = @sy-langu
-        AND t005t~country = marc~CountryOfOrigin
-      LEFT OUTER JOIN I_DeliveryDocument AS likp
-        ON likp~deliverydocument = vbrp~ReferenceSDDocument
-      LEFT OUTER JOIN I_SalesDocument AS vbak
-        ON vbak~salesdocument = vbrp~SalesDocument
-      LEFT OUTER JOIN i_salesdocumentitem AS vbap
-        ON  vbap~salesdocument = vbrp~salesdocument
-        AND vbap~salesdocumentitem = vbrp~salesdocumentitem
-      LEFT OUTER JOIN I_SDDocumentItemPartner WITH PRIVILEGED ACCESS AS vbpa
-        ON  vbpa~SDDocument = vbrp~billingdocument
-        AND vbpa~sddocumentitem = vbrp~BillingDocumentItem
-        AND vbpa~partnerfunction = 'WE'
-      WHERE vbrp~BillingDocument = @ms_document-belnr
-      INTO TABLE @ms_billing_data-vbrp.
+CASE WHEN likp~ActualGoodsMovementDate IS NOT INITIAL THEN likp~ActualGoodsMovementDate ELSE likp~PlannedGoodsIssueDate END AS vgdat,
+vbrp~SalesDocument AS aubel,
+vbrp~SalesDocumentItem AS aupos,
+vbak~salesdocumentdate AS audat,
+vbap~MaterialByCustomer AS aumat,
+vbap~PurchaseOrderByCustomer AS aubst,
+vbap~ShippingType AS auvsa,
+CASE WHEN vbpa~customer <> ' ' THEN vbpa~customer ELSE @ms_billing_data-vbrk-kunre END AS kunwe,
+CASE WHEN vbpa~addressid <> ' ' THEN vbpa~addressid ELSE @ms_billing_data-vbrk-adrre END AS adrwe,
+vbrp~netamount AS netwr,
+vbrp~Subtotal1Amount AS kzwi1,
+vbrp~Subtotal2Amount AS kzwi2,
+vbrp~Subtotal3Amount AS kzwi3,
+vbrp~Subtotal4Amount AS kzwi4,
+vbrp~Subtotal5Amount AS kzwi5,
+vbrp~Subtotal6Amount AS kzwi6,
+vbrp~MaterialPricingGroup AS kondm,
+vbrp~ItemGrossWeight AS brgew,
+vbrp~ItemNetWeight AS ntgew,
+vbrp~ItemWeightUnit AS gewei
+FROM i_billingdocumentitem AS vbrp
+LEFT OUTER JOIN I_ProductPlantBasic AS marc
+ON  marc~product = vbrp~product
+AND marc~plant = vbrp~plant
+LEFT OUTER JOIN I_CountryText AS t005t
+ON  t005t~Language = @sy-langu
+AND t005t~country = marc~CountryOfOrigin
+LEFT OUTER JOIN I_DeliveryDocument AS likp
+ON likp~deliverydocument = vbrp~ReferenceSDDocument
+LEFT OUTER JOIN I_SalesDocument AS vbak
+ON vbak~salesdocument = vbrp~SalesDocument
+LEFT OUTER JOIN i_salesdocumentitem AS vbap
+ON  vbap~salesdocument = vbrp~salesdocument
+AND vbap~salesdocumentitem = vbrp~salesdocumentitem
+LEFT OUTER JOIN I_SDDocumentItemPartner WITH PRIVILEGED ACCESS AS vbpa
+ON  vbpa~SDDocument = vbrp~billingdocument
+AND vbpa~sddocumentitem = vbrp~BillingDocumentItem
+AND vbpa~partnerfunction = 'WE'
+WHERE vbrp~BillingDocument = @ms_document-belnr
+INTO TABLE @ms_billing_data-vbrp.
 
     SELECT BillingDocumentItem AS kposn,
            PricingProcedureStep AS stunr,

@@ -47,6 +47,9 @@
     METHODS build_invoice_data_vbrk_totals
       RAISING
         zcx_etr_regulative_exception .
+    METHODS build_invoice_data_vbrk_tax
+      RAISING
+        zcx_etr_regulative_exception .
     METHODS build_invoice_data_vbrk_notes
       RAISING
         zcx_etr_regulative_exception .
@@ -66,6 +69,9 @@
     METHODS build_invoice_data_rmrp_totals
       RAISING
         zcx_etr_regulative_exception .
+    METHODS build_invoice_data_rmrp_tax
+      RAISING
+        zcx_etr_regulative_exception .
     METHODS build_invoice_data_rmrp_notes
       RAISING
         zcx_etr_regulative_exception .
@@ -82,6 +88,9 @@
       RAISING
         zcx_etr_regulative_exception .
     METHODS build_invoice_data_bkpf_totals
+      RAISING
+        zcx_etr_regulative_exception .
+    METHODS build_invoice_data_bkpf_tax
       RAISING
         zcx_etr_regulative_exception .
     METHODS build_invoice_data_bkpf_notes
