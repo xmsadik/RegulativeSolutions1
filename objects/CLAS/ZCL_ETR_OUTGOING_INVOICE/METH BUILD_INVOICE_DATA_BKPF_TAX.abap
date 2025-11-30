@@ -21,8 +21,8 @@
                                                ( ls_bset-fwhol IS INITIAL AND ls_bset-hwhol IS INITIAL ).
           ls_bset-fwhol = ls_bset-fwste.
           ls_bset-hwhol = ls_bset-hwste.
-          ls_bset-fwste = ls_bset-fwbas * ls_tax_match-taxrt / 100.
-          ls_bset-hwste = ls_bset-hwbas * ls_tax_match-taxrt / 100.
+          ls_bset-fwste = ls_bset-fwbas * ls_tax_match-txrtp / 100.
+          ls_bset-hwste = ls_bset-hwbas * ls_tax_match-txrtp / 100.
           ls_bset-fwhol = ls_bset-fwste - ls_bset-fwhol.
           ls_bset-hwhol = ls_bset-hwste - ls_bset-hwhol.
         ENDIF.
