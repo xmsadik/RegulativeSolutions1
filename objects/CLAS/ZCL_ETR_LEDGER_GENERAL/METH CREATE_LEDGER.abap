@@ -640,6 +640,26 @@
                               )->as( xco_cp_time=>format->iso_8601_extended
                               )->value.
 
+
+        " DocumentDate doğrulama
+        DATA: lv_valid_bldat TYPE bldat,
+              lv_doc_year    TYPE numc4.
+
+        " DocumentDate'in yıl kısmını al
+        lv_doc_year = ls_bkpf-DocumentDate+0(4).
+
+        " Tarih geçerliliğini kontrol et (yıl 2025-2099 aralığında olmalı)
+        IF ls_bkpf-DocumentDate IS NOT INITIAL
+           AND lv_doc_year >= '2025'
+           AND lv_doc_year <= '2099'.
+          " Geçerli tarih - olduğu gibi kullan
+          lv_valid_bldat = ls_bkpf-DocumentDate.
+        ELSE.
+          " Geçersiz tarih formatı tespit edildi (örn: 0025-08-18, 2925-08-01, 3025-08-16)
+          " PostingDate'i kullan
+          lv_valid_bldat = ls_bkpf-PostingDate.
+        ENDIF.
+
         CLEAR ls_ledger.
         ls_ledger = VALUE #(
             " Fields from ls_bkpf
@@ -653,7 +673,7 @@
             tcode              = ls_bkpf-TransactionCode
             bktxt              = ls_bkpf-AccountingDocumentHeaderText
             budat              = ls_bkpf-PostingDate
-            bldat              = ls_bkpf-DocumentDate
+            bldat              = lv_valid_bldat
             " Fields from ls_bseg
             hkont              = ls_bseg-GLAccount
             buzei              = ls_bseg-ledgergllineitem
