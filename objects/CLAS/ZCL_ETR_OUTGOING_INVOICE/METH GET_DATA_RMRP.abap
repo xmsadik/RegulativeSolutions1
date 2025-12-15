@@ -36,6 +36,22 @@
         AND FiscalYear = @ms_document-gjahr
       INTO TABLE @ms_invrec_data-glaccountdata.
 
+    SELECT
+        SupplierInvoiceItem AS invoice_doc_item ,
+        material,
+        ProductName AS material_text,
+        quantity,
+        QuantityUnit AS base_uom,
+        SupplierInvoiceItemAmount AS item_amount,
+        TaxCode AS tax_code
+      FROM I_SuplrInvcItemMaterialAPI01 AS Item
+        LEFT OUTER JOIN I_ProductText AS Product
+          ON Product~Language = @sy-langu
+          AND Product~Product = Item~Material
+      WHERE SupplierInvoice = @ms_document-belnr
+        AND FiscalYear = @ms_document-gjahr
+      INTO TABLE @ms_invrec_data-materialdata.
+
     SELECT *
       FROM i_supplierinvoicetaxapi01
       WHERE SupplierInvoice = @ms_document-belnr

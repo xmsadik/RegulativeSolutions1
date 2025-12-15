@@ -66,6 +66,7 @@ CLASS lhc_zetr_ddl_i_outgoing_invoic IMPLEMENTATION.
       FROM zetr_t_usaut
       FOR ALL ENTRIES IN @lt_invoices
       WHERE bukrs = @lt_invoices-CompanyCode
+        AND uname = @sy-uname
       INTO TABLE @DATA(lt_authorizations).
     result = VALUE #( FOR ls_invoice IN lt_invoices
                       ( %tky = ls_invoice-%tky
@@ -76,7 +77,10 @@ CLASS lhc_zetr_ddl_i_outgoing_invoic IMPLEMENTATION.
                         %action-archiveinvoices = COND #( WHEN ls_invoice-statuscode = '' OR ls_invoice-statuscode = '2'
                                                    THEN if_abap_behv=>fc-o-disabled ELSE if_abap_behv=>fc-o-enabled  )
                         %action-setasrejected = COND #( WHEN ls_invoice-statuscode = '' OR ls_invoice-statuscode = '2'
-                                                   THEN if_abap_behv=>fc-o-disabled ELSE if_abap_behv=>fc-o-enabled  )
+                                                             THEN if_abap_behv=>fc-o-disabled
+                                                        WHEN NOT line_exists( lt_authorizations[ bukrs = ls_invoice-CompanyCode ogimr = abap_true ] )
+                                                             THEN if_abap_behv=>fc-o-disabled
+                                                        ELSE if_abap_behv=>fc-o-enabled  )
                         %action-statusupdate = COND #( WHEN ls_invoice-statuscode = '' OR ls_invoice-statuscode = '2'
                                                    THEN if_abap_behv=>fc-o-disabled ELSE if_abap_behv=>fc-o-enabled  )
                         %action-sendMailToPartner = COND #( WHEN ls_invoice-statuscode = '' OR ls_invoice-statuscode = '2'
