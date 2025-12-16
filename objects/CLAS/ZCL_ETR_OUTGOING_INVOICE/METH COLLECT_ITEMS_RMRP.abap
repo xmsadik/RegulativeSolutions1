@@ -32,6 +32,9 @@
       CLEAR ls_invoice_items.
       ls_invoice_items-posnr = ls_itemdata-invoice_doc_item.
       ls_invoice_items-arktx = ls_glaccountdata-item_text.
+      IF ls_invoice_items-arktx IS INITIAL.
+        ls_invoice_items-arktx = ls_glaccountdata-glaccount_name.
+      ENDIF.
       ls_invoice_items-fkimg = 1.
       ls_invoice_items-vrkme = 'ST'.
       ls_invoice_items-netwr = ls_glaccountdata-item_amount.

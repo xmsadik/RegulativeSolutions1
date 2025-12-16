@@ -30,8 +30,13 @@
     SELECT SupplierInvoiceItem AS invoice_doc_item,
            SupplierInvoiceItemText AS item_text,
            SupplierInvoiceItemAmount AS item_amount,
+           glaccounttext~glaccountname AS glaccount_name,
            TaxCode AS Tax_Code
-      FROM I_SuplrInvoiceItemGLAcctAPI01
+      FROM I_SuplrInvoiceItemGLAcctAPI01 AS item
+        LEFT OUTER JOIN i_glaccounttext AS glaccounttext
+          ON  glaccounttext~Language = @sy-langu
+          AND glaccounttext~ChartOfAccounts = @ms_invrec_data-t001-ktopl
+          AND glaccounttext~GLAccount = item~GLAccount
       WHERE SupplierInvoice = @ms_document-belnr
         AND FiscalYear = @ms_document-gjahr
       INTO TABLE @ms_invrec_data-glaccountdata.
