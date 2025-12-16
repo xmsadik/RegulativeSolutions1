@@ -14,6 +14,18 @@
         AND FiscalYear = @ms_document-gjahr
       INTO @ms_invrec_data-headerdata.
 
+    SELECT SINGLE company~companycode AS bukrs,
+                  company~currency AS waers,
+                  company~country AS land1,
+                  CASE WHEN company~CountryChartOfAccounts IS NOT INITIAL THEN CountryChartOfAccounts
+                  ELSE company~chartofaccounts END AS ktopl,
+                  country~taxcalculationprocedure AS kalsm
+      FROM I_CompanyCode AS company
+      INNER JOIN i_country AS country
+        ON country~country = company~country
+      WHERE companycode = @ms_document-bukrs
+      INTO CORRESPONDING FIELDS OF @ms_invrec_data-t001.
+
     SELECT SupplierInvoiceItem AS invoice_doc_item,
            PurchaseOrder AS po_number,
            PurchaseOrderItem AS po_item,
@@ -30,6 +42,7 @@
     SELECT SupplierInvoiceItem AS invoice_doc_item,
            SupplierInvoiceItemText AS item_text,
            SupplierInvoiceItemAmount AS item_amount,
+           item~glaccount as glaccount,
            glaccounttext~glaccountname AS glaccount_name,
            TaxCode AS Tax_Code
       FROM I_SuplrInvoiceItemGLAcctAPI01 AS item
@@ -62,18 +75,6 @@
       WHERE SupplierInvoice = @ms_document-belnr
         AND FiscalYear = @ms_document-gjahr
       INTO TABLE @ms_invrec_data-taxdata.
-
-    SELECT SINGLE company~companycode AS bukrs,
-                  company~currency AS waers,
-                  company~country AS land1,
-                  CASE WHEN company~CountryChartOfAccounts IS NOT INITIAL THEN CountryChartOfAccounts
-                  ELSE company~chartofaccounts END AS ktopl,
-                  country~taxcalculationprocedure AS kalsm
-      FROM I_CompanyCode AS company
-      INNER JOIN i_country AS country
-        ON country~country = company~country
-      WHERE companycode = @ms_document-bukrs
-      INTO CORRESPONDING FIELDS OF @ms_invrec_data-t001.
 
     SELECT country AS land1, CountryName AS landx
       FROM I_CountryText

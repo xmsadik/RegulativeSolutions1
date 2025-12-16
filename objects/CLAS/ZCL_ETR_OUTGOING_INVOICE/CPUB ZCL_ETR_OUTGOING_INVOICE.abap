@@ -138,6 +138,7 @@ CLASS zcl_etr_outgoing_invoice DEFINITION
     TYPES invoice_doc_item TYPE n LENGTH 6.
     TYPES item_text TYPE zetr_e_descr.
     TYPES item_amount TYPE wrbtr_cs.
+    TYPES glaccount TYPE saknr.
     TYPES glaccount_name TYPE zetr_e_descr.
     TYPES tax_code TYPE mwskz.
     TYPES END OF mty_invrec_glaccountdata.
