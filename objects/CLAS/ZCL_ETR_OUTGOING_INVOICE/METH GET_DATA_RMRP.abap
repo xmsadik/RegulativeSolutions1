@@ -46,9 +46,9 @@
            glaccounttext~glaccountname AS glaccount_name,
            TaxCode AS Tax_Code
       FROM I_SuplrInvoiceItemGLAcctAPI01 AS item
-        LEFT OUTER JOIN i_glaccounttext AS glaccounttext
+        LEFT OUTER JOIN I_GlAccountTextInCompanycode AS glaccounttext
           ON  glaccounttext~Language = @sy-langu
-          AND glaccounttext~ChartOfAccounts = @ms_invrec_data-t001-ktopl
+          AND glaccounttext~CompanyCode = @ms_document-bukrs
           AND glaccounttext~GLAccount = item~GLAccount
       WHERE SupplierInvoice = @ms_document-belnr
         AND FiscalYear = @ms_document-gjahr

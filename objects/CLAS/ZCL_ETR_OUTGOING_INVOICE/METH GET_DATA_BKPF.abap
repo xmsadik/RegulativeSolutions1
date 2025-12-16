@@ -96,13 +96,13 @@
                      THEN fiacc~taxty
                 ELSE altfiacc~taxty END AS taxty
       FROM i_journalentryitem AS item
-        LEFT OUTER JOIN i_glaccounttext AS glaccounttext
+        LEFT OUTER JOIN I_GlAccountTextInCompanycode AS glaccounttext
           ON  glaccounttext~Language = @sy-langu
-          AND glaccounttext~ChartOfAccounts = @ms_accdoc_data-t001-ktopl
+          AND glaccounttext~CompanyCode = @ms_document-bukrs
           AND glaccounttext~GLAccount = item~GLAccount
-        LEFT OUTER JOIN i_glaccounttext AS altglaccounttext
+        LEFT OUTER JOIN I_GlAccountTextInCompanycode AS altglaccounttext
           ON  altglaccounttext~Language = @sy-langu
-          AND altglaccounttext~ChartOfAccounts = @ms_accdoc_data-t001-ktopl
+          AND altglaccounttext~CompanyCode = @ms_document-bukrs
           AND altglaccounttext~GLAccount = item~AlternativeGLAccount
         LEFT OUTER JOIN zetr_t_fiacc AS fiacc
           ON  fiacc~ktopl = @ms_accdoc_data-t001-ktopl
