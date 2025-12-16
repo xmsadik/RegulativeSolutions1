@@ -708,9 +708,12 @@
                         INTO ls_xml_item-detailcomment
                         SEPARATED BY space.
           ELSE.
-            ls_xml_item-detailcomment = ls_item-sgtxt.
+            IF ls_item-sgtxt IS NOT INITIAL.
+              ls_xml_item-detailcomment = ls_item-sgtxt.
+            ELSE.
+              ls_xml_item-detailcomment = ls_item-bktxt.  " Belge başlığından al
+            ENDIF.
           ENDIF.
-
           REPLACE ALL OCCURRENCES OF '\' IN ls_xml_item-detailcomment WITH '/'.
 
           CLEAR lv_saknr.
