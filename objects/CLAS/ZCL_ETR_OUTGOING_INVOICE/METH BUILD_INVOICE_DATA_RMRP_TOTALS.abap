@@ -11,11 +11,12 @@
     CASE ms_document-prfid.
       WHEN 'EABELGE'.
         LOOP AT ms_invoice_ubl-taxtotal INTO DATA(ls_tax_total).
-          ms_invoice_ubl-legalmonetarytotal-taxinclusiveamount-content += ls_tax_total-taxamount-content.
+          ms_invoice_ubl-legalmonetarytotal-payableamount-content -= ls_tax_total-taxamount-content.
+          ms_invoice_ubl-legalmonetarytotal-taxexclusiveamount-content -= ls_tax_total-taxamount-content.
         ENDLOOP.
       WHEN OTHERS.
         LOOP AT ms_invoice_ubl-taxtotal INTO ls_tax_total.
-          ms_invoice_ubl-legalmonetarytotal-payableamount-content -= ls_tax_total-taxamount-content.
+          ms_invoice_ubl-legalmonetarytotal-taxinclusiveamount-content += ls_tax_total-taxamount-content.
         ENDLOOP.
     ENDCASE.
 
