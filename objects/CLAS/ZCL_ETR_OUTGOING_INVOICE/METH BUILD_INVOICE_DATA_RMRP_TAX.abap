@@ -43,6 +43,40 @@
       <ls_tax_subtotal>-taxamount-content = ls_invrec_tax-TaxAmount.
       <ls_tax_subtotal>-taxamount-currencyid = ms_invrec_data-headerdata-currency.
     ENDLOOP.
+
+    LOOP AT ms_invrec_data-withholdingtaxDATA INTO DATA(ls_invrec_wthtax).
+      SELECT SINGLE *
+        FROM zetr_t_taxmc
+        WHERE kalsm = @ms_invrec_data-t001-kalsm
+          AND mwskz = @ls_invrec_wthtax-WithholdingTaxCode
+        INTO @ls_tax_match.
+      CHECK sy-subrc = 0.
+
+      SELECT SINGLE *
+        FROM zetr_ddl_i_tax_types
+        WHERE TaxType = @ls_tax_match-taxty
+        INTO @ls_tax_data.
+
+      APPEND INITIAL LINE TO ms_invoice_ubl-taxtotal ASSIGNING <ls_tax_total>.
+      <ls_tax_total>-taxamount-currencyid = ms_invrec_data-headerdata-currency.
+      <ls_tax_total>-taxamount-content = COND #( WHEN ls_invrec_wthtax-ManuallyEnteredWhldgTaxAmount IS NOT INITIAL
+                                                   THEN ls_invrec_wthtax-ManuallyEnteredWhldgTaxAmount
+                                                 ELSE ms_invrec_data-headerdata-gross_amnt * ls_tax_match-taxrt / 100 ).
+
+      APPEND INITIAL LINE TO <ls_tax_total>-taxsubtotal ASSIGNING <ls_tax_subtotal>.
+      <ls_tax_subtotal>-taxcategory-taxscheme-name-content = ls_tax_data-LongDescription.
+      <ls_tax_subtotal>-taxcategory-taxscheme-taxtypecode-content = ls_tax_match-taxty.
+      <ls_tax_subtotal>-taxableamount-content = COND #( WHEN ls_invrec_wthtax-WithholdingTaxBaseAmount IS NOT INITIAL
+                                                          THEN ls_invrec_wthtax-WithholdingTaxBaseAmount
+                                                        ELSE ms_invrec_data-headerdata-gross_amnt ).
+      <ls_tax_subtotal>-taxableamount-currencyid = ms_invrec_data-headerdata-currency.
+      <ls_tax_subtotal>-percent-content = ls_tax_match-taxrt.
+      <ls_tax_subtotal>-taxamount-content = COND #( WHEN ls_invrec_wthtax-ManuallyEnteredWhldgTaxAmount IS NOT INITIAL
+                                                      THEN ls_invrec_wthtax-ManuallyEnteredWhldgTaxAmount
+                                                    ELSE ms_invrec_data-headerdata-gross_amnt * ls_tax_match-taxrt / 100 ).
+      <ls_tax_subtotal>-taxamount-currencyid = ms_invrec_data-headerdata-currency.
+    ENDLOOP.
+
     IF ms_invoice_ubl-taxtotal IS INITIAL.
       fill_common_tax_totals( ).
     ENDIF.

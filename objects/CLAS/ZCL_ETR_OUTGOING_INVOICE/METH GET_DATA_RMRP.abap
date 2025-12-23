@@ -42,7 +42,7 @@
     SELECT SupplierInvoiceItem AS invoice_doc_item,
            SupplierInvoiceItemText AS item_text,
            SupplierInvoiceItemAmount AS item_amount,
-           item~glaccount as glaccount,
+           item~glaccount AS glaccount,
            glaccounttext~glaccountname AS glaccount_name,
            TaxCode AS Tax_Code
       FROM I_SuplrInvoiceItemGLAcctAPI01 AS item
@@ -70,11 +70,20 @@
         AND FiscalYear = @ms_document-gjahr
       INTO TABLE @ms_invrec_data-materialdata.
 
-    SELECT *
-      FROM i_supplierinvoicetaxapi01
-      WHERE SupplierInvoice = @ms_document-belnr
-        AND FiscalYear = @ms_document-gjahr
-      INTO TABLE @ms_invrec_data-taxdata.
+    CASE ms_document-prfid.
+      WHEN 'EABELGE'.
+        SELECT *
+          FROM I_SuplrInvcHeaderWhldgTaxAPI01
+          WHERE SupplierInvoice = @ms_document-belnr
+            AND FiscalYear = @ms_document-gjahr
+          INTO TABLE @ms_invrec_data-withholdingtaxdata.
+      WHEN OTHERS.
+        SELECT *
+          FROM i_supplierinvoicetaxapi01
+          WHERE SupplierInvoice = @ms_document-belnr
+            AND FiscalYear = @ms_document-gjahr
+          INTO TABLE @ms_invrec_data-taxdata.
+    ENDCASE.
 
     SELECT country AS land1, CountryName AS landx
       FROM I_CountryText

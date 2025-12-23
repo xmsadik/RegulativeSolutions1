@@ -110,6 +110,14 @@
     ls_invoice_rule_input-mmdty = ls_rbkp-blart.
     ls_invoice_rule_input-partner = ls_partner_data-businesspartner.
 
+    SELECT SINGLE Order~PurchaseOrderType
+      FROM I_SuplrInvcItemPurOrdRefAPI01 AS InvItem
+      INNER JOIN I_PurchaseOrderAPI01 AS Order
+        ON InvItem~PurchaseOrder = Order~PurchaseOrder
+      WHERE InvItem~SupplierInvoice = @iv_belnr
+        AND InvItem~FiscalYear = @iv_gjahr
+      INTO @ls_invoice_rule_input-bsart.
+
     determine_invoice_scenario(
       EXPORTING
         is_invoice_rule_input = ls_invoice_rule_input

@@ -217,6 +217,13 @@ CLASS zcl_etr_invoice_operations DEFINITION
       RETURNING
         VALUE(rs_rule_output) TYPE zetr_s_invoice_rules_out.
 
+    METHODS get_eproducer_rule
+      IMPORTING
+        !iv_rule_type         TYPE zetr_e_rulet
+        !is_rule_input        TYPE zetr_s_invoice_rules_in
+      RETURNING
+        VALUE(rs_rule_output) TYPE zetr_s_invoice_rules_out.
+
     METHODS get_einvoice_rules
       IMPORTING
         !iv_rule_type         TYPE zetr_e_rulet
@@ -225,6 +232,13 @@ CLASS zcl_etr_invoice_operations DEFINITION
         VALUE(rt_rule_output) TYPE mty_invoice_rules_out.
 
     METHODS get_earchive_rules
+      IMPORTING
+        !iv_rule_type         TYPE zetr_e_rulet
+        !is_rule_input        TYPE zetr_s_invoice_rules_in
+      RETURNING
+        VALUE(rt_rule_output) TYPE mty_invoice_rules_out.
+
+    METHODS get_eproducer_rules
       IMPORTING
         !iv_rule_type         TYPE zetr_e_rulet
         !is_rule_input        TYPE zetr_s_invoice_rules_in

@@ -187,6 +187,7 @@ CLASS zcl_etr_outgoing_invoice DEFINITION
     TYPES itemdata TYPE TABLE OF mty_invrec_itemdata WITH DEFAULT KEY.
     TYPES glaccountdata TYPE TABLE OF mty_invrec_glaccountdata WITH DEFAULT KEY.
     TYPES taxdata TYPE STANDARD TABLE OF i_supplierinvoicetaxapi01 WITH DEFAULT KEY.
+    TYPES withholdingtaxdata TYPE STANDARD TABLE OF I_SuplrInvcHeaderWhldgTaxAPI01 WITH DEFAULT KEY.
     TYPES materialdata TYPE TABLE OF mty_invrec_materialdata WITH DEFAULT KEY.
     TYPES address_number TYPE c LENGTH 10.
     TYPES taxid TYPE zetr_e_taxid.
@@ -393,6 +394,7 @@ CLASS zcl_etr_outgoing_invoice DEFINITION
     METHODS build_invoice_data
       EXPORTING
         !es_invoice_ubl       TYPE zif_etr_invoice_ubl21=>invoicetype
+        !es_credit_ubl        TYPE zif_etr_credit_ubl21=>creditnotetype
         !ev_invoice_ubl       TYPE xstring
         !ev_invoice_hash      TYPE mty_hash_code
         !et_custom_parameters TYPE mty_custom_parameters_t

@@ -8,9 +8,16 @@
     build_invoice_data_rmrp_tax( ).
     fill_common_tax_totals( ).
 
-    LOOP AT ms_invoice_ubl-taxtotal INTO DATA(ls_tax_total).
-      ms_invoice_ubl-legalmonetarytotal-taxinclusiveamount-content += ls_tax_total-taxamount-content.
-    ENDLOOP.
+    CASE ms_document-prfid.
+      WHEN 'EABELGE'.
+        LOOP AT ms_invoice_ubl-taxtotal INTO DATA(ls_tax_total).
+          ms_invoice_ubl-legalmonetarytotal-taxinclusiveamount-content += ls_tax_total-taxamount-content.
+        ENDLOOP.
+      WHEN OTHERS.
+        LOOP AT ms_invoice_ubl-taxtotal INTO ls_tax_total.
+          ms_invoice_ubl-legalmonetarytotal-payableamount-content -= ls_tax_total-taxamount-content.
+        ENDLOOP.
+    ENDCASE.
 
     ms_invoice_ubl-legalmonetarytotal-lineextensionamount-currencyid = ms_invrec_data-headerdata-currency.
     ms_invoice_ubl-legalmonetarytotal-taxexclusiveamount-currencyid = ms_invrec_data-headerdata-currency.

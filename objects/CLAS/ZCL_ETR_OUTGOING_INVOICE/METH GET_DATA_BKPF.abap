@@ -198,11 +198,19 @@
                    AND bseg~shkzg = 'H'
                    AND fiac~accty IS NULL
                   THEN bseg~wrbtr
+                  WHEN bseg~koart = 'S'
+                   AND bseg~shkzg = 'S'
+                   AND fiac~accty = 'D'
+                  THEN bseg~wrbtr
                   ELSE 0 END ) AS fwbas,
         SUM( CASE WHEN bseg~koart <> 'D'
                    AND bseg~koart <> 'K'
                    AND bseg~shkzg = 'H'
                    AND fiac~accty IS NULL
+                  THEN bseg~dmbtr
+                  WHEN bseg~koart = 'S'
+                   AND bseg~shkzg = 'S'
+                   AND fiac~accty = 'D'
                   THEN bseg~dmbtr
                   ELSE 0 END ) AS hwbas,
         SUM( CASE WHEN bseg~koart = 'S'
