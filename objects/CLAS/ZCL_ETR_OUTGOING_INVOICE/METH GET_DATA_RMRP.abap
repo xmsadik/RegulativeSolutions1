@@ -77,6 +77,27 @@
           WHERE SupplierInvoice = @ms_document-belnr
             AND FiscalYear = @ms_document-gjahr
           INTO TABLE @ms_invrec_data-withholdingtaxdata.
+
+        SELECT item~AccountingDocumentItem AS buzei,
+               item~financialaccounttype AS koart,
+               item~debitcreditcode AS shkzg,
+               item~glaccount AS hkont,
+               abs( amountincompanycodecurrency ) AS dmbtr,
+               abs( amountintransactioncurrency ) AS wrbtr,
+               DocumentItemText AS sgtxt,
+               TaxCode AS mwskz
+          FROM i_journalentryitem AS item
+          INNER JOIN zetr_t_fiacc AS fiacc
+            ON  fiacc~ktopl = @ms_invrec_data-t001-ktopl
+            AND fiacc~saknr = item~GLAccount
+           WHERE item~ReferenceDocumentType = 'RMRP'
+             AND item~ReferenceDocument = @ms_document-belnr
+             AND item~ReferenceDocumentContext = @ms_document-gjahr
+             AND item~DebitCreditCode = 'H'
+             AND item~FinancialAccountType = 'S'
+             AND item~Ledger = '0L'
+             AND fiacc~taxty = 'T'
+          INTO CORRESPONDING FIELDS OF TABLE @ms_invrec_data-bseg.
       WHEN OTHERS.
         SELECT *
           FROM i_supplierinvoicetaxapi01
