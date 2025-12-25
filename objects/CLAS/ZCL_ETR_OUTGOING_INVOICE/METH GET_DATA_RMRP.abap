@@ -17,8 +17,9 @@
     SELECT SINGLE company~companycode AS bukrs,
                   company~currency AS waers,
                   company~country AS land1,
-                  CASE WHEN company~CountryChartOfAccounts IS NOT INITIAL THEN CountryChartOfAccounts
-                  ELSE company~chartofaccounts END AS ktopl,
+*                  CASE WHEN company~CountryChartOfAccounts IS NOT INITIAL THEN CountryChartOfAccounts
+*                  ELSE company~chartofaccounts END AS ktopl,
+                  company~chartofaccounts AS ktopl,
                   country~taxcalculationprocedure AS kalsm
       FROM I_CompanyCode AS company
       INNER JOIN i_country AS country
@@ -96,7 +97,7 @@
              AND item~DebitCreditCode = 'H'
              AND item~FinancialAccountType = 'S'
              AND item~Ledger = '0L'
-             AND fiacc~taxty = 'T'
+             AND fiacc~accty = 'T'
           INTO CORRESPONDING FIELDS OF TABLE @ms_invrec_data-bseg.
       WHEN OTHERS.
         SELECT *
