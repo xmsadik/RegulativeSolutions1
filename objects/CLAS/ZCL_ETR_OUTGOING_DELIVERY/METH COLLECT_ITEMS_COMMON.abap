@@ -1,6 +1,6 @@
   METHOD collect_items_common.
     DATA: ls_items TYPE mty_item_collect,
-          ls_item  TYPE zetr_t_ogdli.
+          ls_item  TYPE mty_ogdli.
 
     LOOP AT mt_saved_delivery_items INTO ls_item.
       CHECK ls_item-menge IS NOT INITIAL.

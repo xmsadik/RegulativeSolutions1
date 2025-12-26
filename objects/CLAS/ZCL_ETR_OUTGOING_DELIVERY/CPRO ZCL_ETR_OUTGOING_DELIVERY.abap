@@ -152,6 +152,6 @@
         cs_invoice_line TYPE zif_etr_common_ubl21=>despatchlinetype.
     METHODS collect_items_common_chg_item
       IMPORTING
-        is_common_item TYPE zetr_t_ogdli
+        is_common_item TYPE mty_ogdli
       CHANGING
         cs_item        TYPE zcl_etr_outgoing_delivery=>mty_item_collect.

@@ -8,6 +8,9 @@ CLASS zcl_etr_outgoing_delivery DEFINITION
     TYPES tdline   TYPE c LENGTH 132.
     TYPES END OF mty_text_line.
 
+    tyPES mty_ogdli tYPE zetr_t_ogdli.
+    tyPES mty_ogdli_t tYPE TABLE OF mty_ogdli WITH eMPTY KEY.
+
     TYPES BEGIN OF mty_texts.
     TYPES tdobject TYPE c LENGTH 10.
     TYPES tdname   TYPE c LENGTH 70.
@@ -217,7 +220,8 @@ CLASS zcl_etr_outgoing_delivery DEFINITION
     TYPES t005 TYPE SORTED TABLE OF mty_t005 WITH UNIQUE KEY land1.
     TYPES t005u TYPE SORTED TABLE OF mty_t005u WITH UNIQUE KEY land1 bland.
     TYPES head TYPE zetr_t_ogdlv.
-    TYPES items TYPE SORTED TABLE OF zetr_t_ogdli WITH UNIQUE KEY linno.
+    TYPES items TYPE mty_ogdli_t.
+*    TYPES items TYPE SORTED TABLE OF zetr_t_ogdli WITH UNIQUE KEY linno.
     TYPES vbak TYPE SORTED TABLE OF mty_vbak WITH UNIQUE KEY vbeln.
     TYPES address_number TYPE c LENGTH 10.
     TYPES taxid TYPE zetr_e_taxid.
@@ -247,7 +251,7 @@ CLASS zcl_etr_outgoing_delivery DEFINITION
     TYPES END OF mty_item_collect .
     TYPES mty_item_collect_t TYPE TABLE OF mty_item_collect .
     TYPES BEGIN OF mty_delivery_item.
-    INCLUDE TYPE zetr_t_ogdli.
+    INCLUDE TYPE mty_ogdli.
     TYPES END OF mty_delivery_item.
     TYPES mty_delivery_items TYPE TABLE OF mty_delivery_item WITH EMPTY KEY.
 
