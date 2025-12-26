@@ -13,6 +13,12 @@
       ls_items-admat = ls_item-manii.
       ls_items-kdmat = ls_item-buyii.
 
+      collect_items_common_chg_item(
+        EXPORTING
+          is_common_item = ls_item
+        CHANGING
+          cs_item = ls_items ).
+
       IF ms_document-itmcl = abap_false.
         ls_items-posnr = ls_item-linno.
         APPEND ls_items TO mt_delivery_items.

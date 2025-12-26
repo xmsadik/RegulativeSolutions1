@@ -241,6 +241,9 @@ CLASS zcl_etr_outgoing_delivery DEFINITION
     TYPES pacno TYPE c LENGTH 20.
     TYPES pacqt TYPE menge_d.
     TYPES pacun TYPE meins.
+    TYPES brgew TYPE brgew.
+    TYPES ntgew TYPE ntgew.
+    TYPES gewei TYPE gewei.
     TYPES END OF mty_item_collect .
     TYPES mty_item_collect_t TYPE TABLE OF mty_item_collect .
     TYPES BEGIN OF mty_delivery_item.
