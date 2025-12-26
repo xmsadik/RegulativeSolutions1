@@ -155,6 +155,9 @@ CLASS zcl_etr_outgoing_delivery DEFINITION
     TYPES kunnr TYPE zetr_e_partner.
     TYPES ernam TYPE abp_creation_user.
     TYPES wbstk TYPE c LENGTH 1.
+    TYPES brgew TYPE brgew.
+    TYPES ntgew TYPE ntgew.
+    TYPES gewei TYPE gewei.
     TYPES END OF mty_likp.
 
     TYPES BEGIN OF mty_lips.

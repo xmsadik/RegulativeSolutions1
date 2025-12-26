@@ -6,7 +6,10 @@
                   DeliveryDocumentType AS lfart,
                   ShipToParty AS kunnr,
                   CreatedByUser AS ernam,
-                  overallgoodsmovementstatus AS wbstk
+                  overallgoodsmovementstatus AS wbstk,
+                  headergrossweight AS brgew,
+                  headernetweight AS ntgew,
+                  HeaderWeightUnit AS gewei
     FROM I_DeliveryDocument
     WHERE deliverydocument = @ms_document-belnr
     INTO @ms_outdel_data-likp.
