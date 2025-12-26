@@ -24,7 +24,14 @@
            lips~ReferenceSDDocument AS vgbel,
            lips~ReferenceSDDocumentItem AS vgpos,
            vbap~MaterialByCustomer AS kdmat,
-           vbap~PurchaseOrderByCustomer AS bstkd
+           vbap~PurchaseOrderByCustomer AS bstkd,
+           lips~DistributionChannel AS vtweg,
+           lips~Division AS spart,
+           lips~SalesOffice AS vkbur,
+           lips~SalesGroup AS vkgrp,
+           lips~ItemGrossWeight AS brgew,
+           lips~ItemNetWeight AS ntgew,
+           lips~ItemWeightUnit AS gewei
        FROM i_deliverydocumentitem AS lips
        LEFT OUTER JOIN i_salesdocumentitem AS vbap
         ON  vbap~salesdocument = lips~ReferenceSDDocument

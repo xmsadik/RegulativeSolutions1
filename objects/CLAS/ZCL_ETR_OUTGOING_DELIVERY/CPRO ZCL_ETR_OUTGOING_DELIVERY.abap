@@ -144,3 +144,9 @@
         is_lips TYPE mty_lips
       CHANGING
         cs_item TYPE mty_item_collect.
+
+    METHODS build_delivery_data_item_chg
+      IMPORTING
+        is_item         TYPE mty_item_collect
+      CHANGING
+        cs_invoice_line TYPE zif_etr_common_ubl21=>despatchlinetype.

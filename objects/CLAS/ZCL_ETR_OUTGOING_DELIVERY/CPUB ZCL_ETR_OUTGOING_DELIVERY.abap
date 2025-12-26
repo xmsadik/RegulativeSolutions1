@@ -171,6 +171,13 @@ CLASS zcl_etr_outgoing_delivery DEFINITION
     TYPES vgpos TYPE n LENGTH 6.
     TYPES kdmat TYPE c LENGTH 35.
     TYPES bstkd TYPE c LENGTH 35.
+    TYPES vtweg TYPE vtweg.
+    TYPES spart TYPE spart.
+    TYPES vkbur TYPE vkbur.
+    TYPES vkgrp TYPE vkgrp.
+    TYPES brgew TYPE brgew.
+    TYPES ntgew TYPE ntgew.
+    TYPES gewei TYPE gewei.
     TYPES END OF mty_lips.
 
     TYPES BEGIN OF mty_vbpa.
@@ -231,6 +238,9 @@ CLASS zcl_etr_outgoing_delivery DEFINITION
     TYPES netpr TYPE c LENGTH 20.
     TYPES peinh TYPE c LENGTH 20.
     TYPES netwa TYPE waers.
+    TYPES pacno TYPE c LENGTH 20.
+    TYPES pacqt TYPE menge_d.
+    TYPES pacun TYPE meins.
     TYPES END OF mty_item_collect .
     TYPES mty_item_collect_t TYPE TABLE OF mty_item_collect .
     TYPES BEGIN OF mty_delivery_item.
