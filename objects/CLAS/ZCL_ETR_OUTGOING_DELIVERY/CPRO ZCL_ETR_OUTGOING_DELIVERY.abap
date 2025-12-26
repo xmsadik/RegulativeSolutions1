@@ -138,3 +138,9 @@
     METHODS get_issue_date
       RETURNING
         VALUE(rv_date) TYPE datum.
+
+    METHODS collect_items_likp_change_item
+      IMPORTING
+        is_lips TYPE mty_lips
+      CHANGING
+        cs_item TYPE mty_item_collect.
