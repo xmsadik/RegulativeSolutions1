@@ -316,7 +316,7 @@
                                                            id = 'ZETR_COMMON'
                                                            number = '036' ).
               lo_log->add_item( lo_message ).
-            ELSEIF ( <InvoiceLine>-TaxAmount IS INITIAL OR <InvoiceLine>-ExemptionExists = abap_true ) AND <InvoiceLine>-TaxExemption IS INITIAL.
+            ELSEIF <InvoiceLine>-ExemptionExists = abap_true AND <InvoiceLine>-TaxExemption IS INITIAL.
               lo_message = cl_bali_message_setter=>create( severity = if_bali_constants=>c_severity_error
                                                            id = 'ZETR_COMMON'
                                                            number = '039' ).

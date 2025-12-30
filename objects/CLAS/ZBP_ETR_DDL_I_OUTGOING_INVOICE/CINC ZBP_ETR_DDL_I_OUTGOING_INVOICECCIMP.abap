@@ -335,7 +335,7 @@ CLASS lhc_zetr_ddl_i_outgoing_invoic IMPLEMENTATION.
                                             number   = '036'
                                             severity = if_abap_behv_message=>severity-error ) ) TO reported-OutgoingInvoices.
         DELETE InvoiceList.
-      ELSEIF ( <InvoiceLine>-TaxAmount IS INITIAL OR <InvoiceLine>-ExemptionExists = abap_true ) AND <InvoiceLine>-TaxExemption IS INITIAL.
+      ELSEIF <InvoiceLine>-ExemptionExists = abap_true AND <InvoiceLine>-TaxExemption IS INITIAL.
         APPEND VALUE #( DocumentUUID = <InvoiceLine>-DocumentUUID
                         %msg = new_message( id       = 'ZETR_COMMON'
                                             number   = '039'
